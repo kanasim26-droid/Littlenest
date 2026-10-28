@@ -31,8 +31,8 @@
         "6-12M"
       ],
       "images": [
-        "/src/assets/images/product_knit_romper_1793176728603.jpg",
-        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
       ],
       "weightGrams": 160,
       "status": "published",
@@ -76,8 +76,8 @@
         "Newborn (0-6M)"
       ],
       "images": [
-        "/src/assets/images/product_swaddle_set_1793176729232.jpg",
-        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_swaddle_set_1793176729232.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
       ],
       "weightGrams": 210,
       "status": "published",
@@ -121,8 +121,8 @@
         "0-3M"
       ],
       "images": [
-        "/src/assets/images/product_gift_bundle_1793176729526.jpg",
-        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_gift_bundle_1793176729526.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
       ],
       "weightGrams": 650,
       "status": "published",
@@ -166,8 +166,8 @@
         "0-6M"
       ],
       "images": [
-        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
-        "/src/assets/images/product_knit_romper_1793176728603.jpg"
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg"
       ],
       "weightGrams": 95,
       "status": "published",
@@ -213,8 +213,8 @@
         "6-12M"
       ],
       "images": [
-        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
-        "/src/assets/images/product_knit_romper_1793176728603.jpg"
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg"
       ],
       "weightGrams": 180,
       "status": "published",
@@ -258,8 +258,8 @@
         "6-12M"
       ],
       "images": [
-        "/src/assets/images/product_knit_romper_1793176728603.jpg",
-        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
       ],
       "weightGrams": 240,
       "status": "published",
@@ -282,7 +282,7 @@
       "name": "Sleepsuits & Rompers",
       "slug": "sleepsuits-and-rompers",
       "description": "Buttery soft ribbed and waffle sleepsuits crafted for cozy naps and newborn comfort.",
-      "image": "/src/assets/images/product_knit_romper_1793176728603.jpg",
+      "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg",
       "productCount": 3
     },
     {
@@ -290,7 +290,7 @@
       "name": "Blankets & Swaddles",
       "slug": "blankets-and-swaddles",
       "description": "Double-gauze breathable muslin and honeycomb knit blankets for serene snoozing.",
-      "image": "/src/assets/images/product_swaddle_set_1793176729232.jpg",
+      "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_swaddle_set_1793176729232.jpg",
       "productCount": 1
     },
     {
@@ -298,7 +298,7 @@
       "name": "Socks, Hats & Mittens",
       "slug": "socks-hats-and-mittens",
       "description": "Stay-on bootie socks, knotted beanies, and scratch mittens in soothing natural colors.",
-      "image": "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+      "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
       "productCount": 1
     },
     {
@@ -306,7 +306,7 @@
       "name": "Newborn Gift Sets",
       "slug": "newborn-gift-sets",
       "description": "Thoughtfully curated keepsake gift hampers and hospital-bag starter bundles.",
-      "image": "/src/assets/images/product_gift_bundle_1793176729526.jpg",
+      "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_gift_bundle_1793176729526.jpg",
       "productCount": 1
     }
   ],
@@ -384,7 +384,7 @@
           "quantity": 1,
           "unitPrice": 2450,
           "totalPrice": 2450,
-          "image": "/src/assets/images/product_knit_romper_1793176728603.jpg",
+          "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg",
           "supplierSku": "ALI-RIB-ROMP-SAGE",
           "supplierUrl": "https://aliexpress.com/item/10050062819203.html"
         }
@@ -441,7 +441,7 @@
           "quantity": 1,
           "unitPrice": 2450,
           "totalPrice": 2450,
-          "image": "/src/assets/images/product_knit_romper_1793176728603.jpg",
+          "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg",
           "supplierSku": "ALI-RIB-ROMP-SAGE",
           "supplierUrl": "https://aliexpress.com/item/10050062819203.html"
         },
@@ -453,7 +453,7 @@
           "quantity": 1,
           "unitPrice": 1850,
           "totalPrice": 1850,
-          "image": "/src/assets/images/product_swaddle_set_1793176729232.jpg",
+          "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_swaddle_set_1793176729232.jpg",
           "supplierSku": "ALI-SWAD-LEAF-BLUSH",
           "supplierUrl": "https://aliexpress.com/item/10050058291044.html"
         }
@@ -515,7 +515,7 @@
           "quantity": 1,
           "unitPrice": 5200,
           "totalPrice": 5200,
-          "image": "/src/assets/images/product_gift_bundle_1793176729526.jpg",
+          "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_gift_bundle_1793176729526.jpg",
           "supplierSku": "ALI-GIFT-WAFFLE-5PC",
           "supplierUrl": "https://aliexpress.com/item/10050071940291.html"
         }
@@ -611,7 +611,7 @@
       "couponCode": "LITTLE10",
       "buttonText": "Explore the Collection",
       "buttonLink": "/shop",
-      "imageUrl": "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+      "imageUrl": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
       "backgroundColor": "#FFF9F4",
       "textColor": "#5A463C",
       "buttonStyle": "solid_brown",
@@ -648,7 +648,7 @@
     ],
     "heroHeadline": "Little Clothes for Life's Biggest Love.",
     "heroDescription": "Discover thoughtfully selected newborn essentials for your tiniest treasures.",
-    "heroImage": "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+    "heroImage": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
     "heroButtonPrimary": "Shop the Collection",
     "heroButtonSecondary": "Explore Newborn Essentials",
     "socialLinks": {
