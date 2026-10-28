@@ -404,6 +404,37 @@ export const AdminProducts: React.FC = () => {
                   />
                 </div>
 
+                <div className="sm:col-span-2">
+                  <label className="block font-semibold text-[#4A3B32] mb-1">Product Photos (one image URL per line)</label>
+                  <textarea
+                    rows={3}
+                    value={(editingProduct.images || []).join('\n')}
+                    onChange={(e) => setEditingProduct({
+                      ...editingProduct,
+                      images: e.target.value.split('\n').map((url) => url.trim()).filter(Boolean),
+                    })}
+                    placeholder="https://example.com/product-photo.jpg"
+                    className="w-full px-3 py-2 bg-[#FFF9F4] border border-[#E8DCCB] rounded-lg font-mono"
+                  />
+                  <p className="mt-1 text-[11px] text-[#8A7569]">Paste direct, publicly accessible image URLs. This field does not upload files from your computer.</p>
+                  {(editingProduct.images || []).filter(Boolean).length > 0 && (
+                    <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-3">
+                      {(editingProduct.images || []).filter(Boolean).map((url, index) => (
+                        <div key={index} className="border border-[#E8DCCB] rounded-lg p-2">
+                          <img
+                            src={url}
+                            alt={`Product preview ${index + 1}`}
+                            referrerPolicy="no-referrer"
+                            className="w-full h-24 object-contain rounded bg-[#FFF9F4]"
+                            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                          />
+                          <span className="block mt-1 text-[10px] text-[#8A7569]">Photo {index + 1}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <div>
                   <label className="block font-semibold text-[#4A3B32] mb-1">Supplier SKU</label>
                   <input
