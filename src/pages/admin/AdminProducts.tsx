@@ -297,6 +297,12 @@ export const AdminProducts: React.FC = () => {
                 </div>
               )}
 
+              <div className="rounded-lg border border-[#E8DCCB] bg-[#FFF9F4] p-3 text-[#735F53]">
+                <p className="font-semibold text-[#4A3B32]">Quick product setup</p>
+                <p className="mt-1">1. Add the name and price. 2. Add photo links and check the previews. 3. Add the AliExpress link, then save.</p>
+              </div>
+
+              <div className="text-[11px] uppercase tracking-wider font-semibold text-[#8A7569]">Essential details</div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
                   <label className="block font-semibold text-[#4A3B32] mb-1">Product Name *</label>
@@ -374,7 +380,8 @@ export const AdminProducts: React.FC = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div className="sm:col-span-2 pt-3 border-t border-[#E8DCCB]">
+                  <p className="text-[11px] uppercase tracking-wider font-semibold text-[#8A7569] mb-3">Optional product details</p>
                   <label className="block font-semibold text-[#4A3B32] mb-1">Short Description</label>
                   <input
                     type="text"
@@ -404,8 +411,9 @@ export const AdminProducts: React.FC = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
-                  <label className="block font-semibold text-[#4A3B32] mb-1">Product Photos (one image URL per line)</label>
+                <div className="sm:col-span-2 pt-3 border-t border-[#E8DCCB]">
+                  <p className="text-[11px] uppercase tracking-wider font-semibold text-[#8A7569] mb-3">Product photos</p>
+                  <label className="block font-semibold text-[#4A3B32] mb-1">Photo links (one image URL per line)</label>
                   <textarea
                     rows={3}
                     value={(editingProduct.images || []).join('\n')}
