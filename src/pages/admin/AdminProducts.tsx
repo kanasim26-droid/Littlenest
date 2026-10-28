@@ -297,6 +297,12 @@ export const AdminProducts: React.FC = () => {
                 </div>
               )}
 
+              <div className="rounded-lg border border-[#E8DCCB] bg-[#FFF9F4] p-3 text-[#735F53]">
+                <p className="font-semibold text-[#4A3B32]">Quick product setup</p>
+                <p className="mt-1">1. Add the name and price. 2. Add photo links and check the previews. 3. Add the AliExpress link, then save.</p>
+              </div>
+
+              <div className="text-[11px] uppercase tracking-wider font-semibold text-[#8A7569]">Essential details</div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
                   <label className="block font-semibold text-[#4A3B32] mb-1">Product Name *</label>
@@ -374,7 +380,8 @@ export const AdminProducts: React.FC = () => {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div className="sm:col-span-2 pt-3 border-t border-[#E8DCCB]">
+                  <p className="text-[11px] uppercase tracking-wider font-semibold text-[#8A7569] mb-3">Optional product details</p>
                   <label className="block font-semibold text-[#4A3B32] mb-1">Short Description</label>
                   <input
                     type="text"
@@ -402,6 +409,38 @@ export const AdminProducts: React.FC = () => {
                     onChange={(e) => setEditingProduct({ ...editingProduct, supplierProductUrl: e.target.value })}
                     className="w-full px-3 py-2 bg-[#FFF9F4] border border-[#E8DCCB] rounded-lg font-mono"
                   />
+                </div>
+
+                <div className="sm:col-span-2 pt-3 border-t border-[#E8DCCB]">
+                  <p className="text-[11px] uppercase tracking-wider font-semibold text-[#8A7569] mb-3">Product photos</p>
+                  <label className="block font-semibold text-[#4A3B32] mb-1">Photo links (one image URL per line)</label>
+                  <textarea
+                    rows={3}
+                    value={(editingProduct.images || []).join('\n')}
+                    onChange={(e) => setEditingProduct({
+                      ...editingProduct,
+                      images: e.target.value.split('\n').map((url) => url.trim()).filter(Boolean),
+                    })}
+                    placeholder="https://example.com/product-photo.jpg"
+                    className="w-full px-3 py-2 bg-[#FFF9F4] border border-[#E8DCCB] rounded-lg font-mono"
+                  />
+                  <p className="mt-1 text-[11px] text-[#8A7569]">Paste direct, publicly accessible image URLs. This field does not upload files from your computer.</p>
+                  {(editingProduct.images || []).filter(Boolean).length > 0 && (
+                    <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-3">
+                      {(editingProduct.images || []).filter(Boolean).map((url, index) => (
+                        <div key={index} className="border border-[#E8DCCB] rounded-lg p-2">
+                          <img
+                            src={url}
+                            alt={`Product preview ${index + 1}`}
+                            referrerPolicy="no-referrer"
+                            className="w-full h-24 object-contain rounded bg-[#FFF9F4]"
+                            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                          />
+                          <span className="block mt-1 text-[10px] text-[#8A7569]">Photo {index + 1}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div>
