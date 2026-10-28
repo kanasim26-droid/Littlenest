@@ -32,7 +32,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectProduct 
 
   const heroHeadline = settings?.heroHeadline || "Little Clothes for Life's Biggest Love.";
   const heroDescription = settings?.heroDescription || "Discover thoughtfully selected newborn essentials for your tiniest treasures.";
-  const heroImage = settings?.heroImage || "/src/assets/images/hero_newborn_clothing_1793176730078.jpg";
+  const heroImage = settings?.heroImage || "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg";
   const heroPrimaryBtn = settings?.heroButtonPrimary || "Shop the Collection";
   const heroSecondaryBtn = settings?.heroButtonSecondary || "Explore Newborn Essentials";
 
@@ -362,7 +362,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onSelectProduct 
 
             <div className="aspect-4/3 rounded-2xl overflow-hidden shadow-md border border-[#E8DCCB]">
               <img
-                src="/src/assets/images/product_gift_bundle_1793176729526.jpg"
+                src="https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_gift_bundle_1793176729526.jpg"
                 alt="Newborn Gift Hamper Box"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
