@@ -1,0 +1,841 @@
+# MASTER PROMPT: BUILD A COMPLETE NEWBORN CLOTHING DROPSHIPPING E-COMMERCE WEBSITE
+
+Act as a senior full-stack developer, e-commerce architect, UI/UX designer, database engineer, security specialist, and dropshipping automation expert.
+
+Build a complete, production-oriented newborn clothing e-commerce website using an AliExpress dropshipping business model.
+
+This must be a real, functional online store, not merely a landing page, frontend mockup, or collection of nonfunctional buttons.
+
+The store owner must be able to manage products, inventory, prices, discounts, orders, payments, shipping, announcements, popups, emails, and store settings from a secure admin dashboard without editing source code.
+
+Build the customer-facing website, backend, persistent database, admin dashboard, and external-service integration points as one connected application.
+
+## 1. BRAND IDENTITY AND VISUAL DESIGN
+
+Use the temporary brand name "Little Nest" throughout the initial implementation. Store the brand name in editable settings so it can be changed globally without editing individual pages.
+
+Brand personality:
+- Premium and elegant.
+- Soft, warm, nurturing, and trustworthy.
+- Minimal and modern.
+- Suitable for newborns, babies, parents, and baby-shower gifting.
+
+Color palette:
+- Warm ivory: #FFF9F4
+- Blush pink: #F2D8D5
+- Cream beige: #E8DCCB
+- Sage green: #C9D5C0
+- Warm brown: #5A463C
+- White: #FFFFFF
+
+Design requirements:
+- Elegant serif typography for headings.
+- Clean sans-serif typography for body text.
+- High-quality, realistic baby clothing photography.
+- Generous whitespace and balanced layouts.
+- Rounded cards, subtle shadows, refined buttons, and smooth transitions.
+- Responsive design for phones, tablets, laptops, and desktops.
+- Accessible contrast, readable text, keyboard navigation, and meaningful image alt text.
+- Fast loading and optimized images.
+
+Use authentic-looking product photography of newborn rompers, cotton bodysuits, sleepsuits, knitted sets, swaddles, hats, socks, blankets, and gift sets.
+
+Do not use irrelevant stock photography, broken images, fake customer testimonials, or unsupported product safety claims.
+
+## 2. WEBSITE STRUCTURE AND NAVIGATION
+
+Create the following customer-facing pages:
+
+1. Homepage
+2. Shop All
+3. New Arrivals
+4. Best Sellers
+5. Newborn Essentials
+6. Baby Girl Collection
+7. Baby Boy Collection
+8. Unisex Collection
+9. Sleepsuits and Rompers
+10. Blankets and Swaddles
+11. Socks, Hats and Mittens
+12. Newborn Gift Sets
+13. Individual Product Details
+14. Search Results
+15. Shopping Cart
+16. Checkout
+17. Order Confirmation
+18. Track My Order
+19. Customer Account
+20. About Us
+21. Contact Us
+22. Frequently Asked Questions
+23. Size Guide
+24. Shipping Policy
+25. Returns and Refunds Policy
+26. Privacy Policy
+27. Terms and Conditions
+28. Blog and Baby Care Guides
+
+Main navigation should contain:
+- Brand logo
+- Home
+- Shop
+- Collections
+- New Arrivals
+- Gift Sets
+- About Us
+- Contact
+- Search
+- Customer Account
+- Shopping Bag
+
+Use a mobile navigation menu with a clear cart indicator.
+
+All navigation links must lead to real pages or functional sections.
+
+## 3. HOMEPAGE DESIGN
+
+### Announcement bar
+
+Create a thin announcement bar at the very top of the website.
+
+The announcement text, colors, link, and visibility must be editable through the admin dashboard.
+
+Example announcements:
+- Welcome to Little Nest — Made for Your Little Love.
+- Special savings on selected newborn essentials.
+- Explore our newest baby clothing collection.
+- Free shipping on eligible orders.
+
+Do not show a promotion unless the configured conditions are valid.
+
+### Hero section
+
+Use beautiful baby clothing photography in a soft neutral setting.
+
+Headline:
+"Little Clothes for Life's Biggest Love."
+
+Description:
+"Discover thoughtfully selected newborn essentials for your tiniest treasures."
+
+Buttons:
+- Shop the Collection
+- Explore Newborn Essentials
+
+Make the hero image, heading, description, and buttons editable in the admin dashboard.
+
+### Homepage sections
+
+Build:
+- Shop by Category.
+- Best Sellers.
+- New Arrivals.
+- Featured Products.
+- Seasonal Collections.
+- Newborn Gift Sets.
+- Why Choose Little Nest.
+- Genuine Customer Reviews.
+- Baby Care Blog.
+- Newsletter Subscription.
+- Instagram or social media gallery, if configured.
+- Footer with policies and contact details.
+
+Show real product records from the database instead of hardcoded sample products.
+
+If no products exist, show a clean empty state and instruct the admin to add products.
+
+## 4. CONTROLLABLE ANNOUNCEMENT POPUP SYSTEM
+
+Build a complete popup and promotional announcement management system connected to the admin dashboard.
+
+This is a mandatory feature.
+
+### Popup functionality
+
+The admin must be able to:
+- Enable or disable the popup instantly.
+- Create multiple popup campaigns.
+- Select which popup is currently active.
+- Edit the popup headline, description, button text, button link, image, and background.
+- Change text color, background color, and button style.
+- Upload or replace popup images.
+- Select popup layouts, including centered modal, image-and-text layout, and compact announcement popup.
+- Choose between promotional, welcome, coupon, newsletter, and general announcement popups.
+- Schedule a start date and end date.
+- Set the popup to appear immediately or after a configurable delay.
+- Choose whether the popup appears on the homepage, product pages, collection pages, or selected pages.
+- Select desktop, mobile, or all devices.
+- Set display frequency, such as once per session, once per day, or once per visitor within a defined period.
+- Configure a close button and ensure visitors can dismiss it.
+- Set a cooldown period before the popup appears again.
+- Preview the popup before publishing.
+- Save campaigns as drafts.
+- Publish, pause, archive, or delete campaigns.
+- View basic impressions, clicks, and conversion metrics where measurable.
+
+### Example welcome popup
+
+Headline: "A Little Love Awaits You"
+
+Description: "Discover sweet newborn essentials made for life's most precious moments."
+
+Button: "Explore the Collection"
+
+Optional coupon example: "Use LITTLE10 for 10% off selected products."
+
+Only activate the coupon example when the matching discount exists in the database.
+
+### Popup behavior
+
+- Never display the popup on every page load if the configured frequency prevents it.
+- Never repeatedly reopen the popup after a visitor closes it during the configured suppression period.
+- Prevent multiple popups from appearing simultaneously.
+- Do not block checkout or essential navigation.
+- Ensure the popup works on mobile devices and is accessible using a keyboard.
+- Do not require newsletter signup to close a promotional popup.
+- Collect email addresses only with appropriate consent and a valid privacy notice.
+- Do not display expired or unpublished campaigns.
+- Apply scheduled campaign changes automatically.
+- Store popup settings in the database so the admin can update them without redeploying the website.
+
+### Announcement bar management
+
+Create a separate admin section for announcement bars.
+
+Allow the admin to:
+- Create multiple announcement messages.
+- Select the active message.
+- Enable or disable the bar.
+- Configure text, background, text color, and optional link.
+- Schedule publication and expiry.
+- Display a single message or rotate through multiple messages.
+- Set rotation intervals where rotation is enabled.
+- Preview changes before publishing.
+
+The announcement bar and popup must be independently configurable.
+
+## 5. SECURE ADMIN DASHBOARD
+
+Create a protected admin area at `/admin`.
+
+Use Supabase Auth or an equivalent secure authentication service.
+
+The dashboard must include:
+- Overview
+- Products
+- Categories
+- Inventory
+- Discounts and Coupons
+- Orders
+- Customers
+- Payments
+- Suppliers
+- Shipping
+- Announcement Bar
+- Popup Campaigns
+- Homepage Content
+- Email Templates
+- Email Logs
+- Store Settings
+- Reports
+- Admin Users and Roles, if supported by the deployment configuration
+
+### Dashboard overview
+
+Display live database-backed information:
+- Total orders.
+- Orders received today.
+- Gross sales.
+- Discounts granted.
+- Refund totals.
+- Net sales using clearly defined calculations.
+- Pending COD payments.
+- Payments awaiting verification.
+- Orders awaiting fulfillment.
+- Shipped orders.
+- Delivered orders.
+- Active products.
+- Out-of-stock products.
+- Low-stock warnings.
+- Recent orders.
+- Recent administrative activity.
+
+Add date filters and clear loading, error, and empty states.
+
+Do not use invented analytics or static values.
+
+## 6. PRODUCT MANAGEMENT
+
+Create a complete product management interface.
+
+Admin actions:
+- Add products.
+- Edit products.
+- Archive products.
+- Permanently delete products when appropriate.
+- Publish and unpublish products.
+- Duplicate products.
+- Upload multiple product images.
+- Set the main product image.
+- Reorder product images.
+- Create and edit categories.
+- Manage product variants.
+- Feature products on the homepage.
+- Search and filter the catalog.
+
+Product fields:
+- Product name.
+- Slug.
+- Short description.
+- Full description.
+- Category.
+- Product images.
+- Regular price.
+- Sale price.
+- Cost price.
+- Currency.
+- SKU.
+- Supplier name.
+- Supplier product URL.
+- Supplier SKU or variant reference.
+- Material details.
+- Washing instructions.
+- Size guide.
+- Available colors.
+- Available sizes.
+- Weight, when relevant to shipping.
+- Product status.
+- SEO title and meta description.
+- Created date and last updated date.
+
+Support newborn and baby sizes, but only show variants and measurements actually available from the supplier.
+
+Validate prices and variant selections on the server.
+
+When deleting a product, preserve past order records by storing an order-item snapshot of its name, selected variant, quantity, and price. Use archiving when it is safer than permanent deletion.
+
+## 7. INVENTORY AND AVAILABILITY
+
+Implement inventory management for products and variants.
+
+Allow the admin to:
+- Mark products as Available, Out of Stock, Draft, or Unavailable.
+- Set stock quantities when inventory is owned or reliably tracked.
+- Manually adjust stock.
+- Configure low-stock thresholds.
+- Receive low-stock alerts.
+- Disable individual variants.
+- Prevent purchasing unavailable products.
+- Configure preorder availability where appropriate.
+- Review supplier stock information.
+- Review supplier price changes.
+- Set whether a product is available for sale while supplier availability is being checked.
+
+Distinguish clearly between:
+1. Physical inventory owned by the business.
+2. Supplier availability reported by AliExpress.
+3. Unverified or stale supplier inventory data.
+
+Do not claim that supplier inventory is real-time unless the connected integration provides that capability.
+
+Use atomic database operations or an equivalent reliable approach to prevent overselling tracked inventory.
+
+For dropshipped products without owned inventory, use a clearly defined supplier availability and order-confirmation workflow.
+
+## 8. DISCOUNTS AND COUPON MANAGEMENT
+
+Build a complete promotion system.
+
+Support:
+- Percentage discounts.
+- Fixed-amount discounts.
+- Product-specific discounts.
+- Category-specific discounts.
+- Coupon codes.
+- Minimum cart totals.
+- Start and expiry dates.
+- Usage limits.
+- Per-customer usage limits.
+- Active and inactive campaigns.
+- Free shipping promotions.
+- Scheduled sales.
+
+Display the original price and discounted price accurately.
+
+Validate all discounts on the server. Never rely on a frontend calculation to determine the final price.
+
+Ensure expired coupons, invalid codes, and ineligible products are rejected.
+
+Prevent discounts from being applied twice unless stacking is explicitly configured.
+
+## 9. SHOPPING CART AND CHECKOUT
+
+Implement a complete shopping and checkout process.
+
+Features:
+- Add to cart.
+- Remove items.
+- Change quantities.
+- Select product sizes and colors.
+- Apply coupon codes.
+- Calculate subtotal.
+- Calculate shipping.
+- Calculate applicable taxes.
+- Calculate final payable total.
+- Guest checkout.
+- Optional customer accounts.
+- Delivery address form.
+- Phone and email validation.
+- Order review before confirmation.
+- Order confirmation page.
+- Order history for registered customers.
+- Order tracking page.
+
+Use Pakistan as the initial target market.
+
+Support:
+- PKR as the default currency.
+- Pakistani phone numbers.
+- Province or region, city, street address, and postal code.
+- Configurable delivery areas.
+- Configurable courier charges.
+- COD where fulfillment arrangements support it.
+
+Do not claim that a particular courier or delivery method is configured until the relevant service is connected.
+
+Save orders to the database using a secure backend transaction. Recalculate product prices, discounts, shipping, and totals on the server.
+
+Prevent duplicate orders from repeated button clicks or retried requests.
+
+Do not collect payment card details directly.
+
+## 10. PAYMENT METHODS: COD, EASYPAISA AND JAZZCASH
+
+Create a dedicated Payment Settings page in the admin dashboard.
+
+Each payment method must be independently configurable.
+
+### Cash on Delivery
+
+Admin controls:
+- Enable or disable COD.
+- Set a COD fee.
+- Set minimum and maximum order values.
+- Restrict COD by delivery area if needed.
+- Set customer instructions.
+- Configure whether order confirmation is required before fulfillment.
+
+At checkout:
+- Allow customers to choose COD when eligible.
+- Record the order as payment pending.
+- Clearly display the amount due on delivery.
+- Store the selected payment method.
+
+Allow authorized admins to mark COD payments as collected, failed, or refunded where appropriate.
+
+Do not mark COD as paid when the order is merely created or shipped.
+
+### Easypaisa
+
+Provide:
+- Enable and disable controls.
+- Configurable display name and instructions.
+- Merchant account configuration for an approved integration.
+- Secure gateway configuration where supported.
+- Manual payment reference submission when an approved automated integration is unavailable.
+- Admin verification workflow.
+- Payment status history.
+
+### JazzCash
+
+Provide the same configuration capabilities:
+- Enable and disable controls.
+- Configurable instructions.
+- Approved merchant gateway integration where available.
+- Secure credential management.
+- Manual transaction reference workflow when necessary.
+- Admin verification and payment status history.
+
+### Payment configuration rules
+
+- Allow the admin to enable or disable COD, Easypaisa, and JazzCash independently.
+- Update checkout options immediately after settings are saved.
+- Do not require redeployment for ordinary payment-setting changes.
+- Keep secret API credentials in server-side environment variables or a secure secrets manager.
+- Do not expose credentials in frontend JavaScript, public database records, or browser responses.
+- Never request customer PINs, OTPs, passwords, or payment card security codes.
+- Treat manual payment references as unverified until an authorized admin verifies them.
+- Use provider webhooks and signature verification when supported.
+- Make payment verification idempotent so the same event cannot credit an order twice.
+- Record failed payment attempts and verification actions.
+- Clearly label any payment method that still requires merchant approval or configuration.
+
+Create a test mode for development. Never display a fake successful payment for a real transaction.
+
+## 11. ORDER MANAGEMENT
+
+Create a detailed order management module.
+
+Each order must include:
+- Unique order number.
+- Customer name.
+- Email address.
+- Phone number.
+- Delivery address.
+- Product and variant snapshots.
+- Quantities.
+- Item prices.
+- Discounts.
+- Shipping fees.
+- Taxes where applicable.
+- Final order total.
+- Payment method.
+- Payment status.
+- Fulfillment status.
+- Supplier references.
+- Courier details.
+- Tracking number.
+- Order notes.
+- Creation date.
+- Order status history.
+
+Support statuses such as:
+- Pending Confirmation.
+- Confirmed.
+- Awaiting Payment.
+- Payment Verified.
+- Processing.
+- Supplier Order Placed.
+- Shipped.
+- Delivered.
+- Cancelled.
+- Refund Pending.
+- Refunded.
+- Failed Fulfillment.
+
+Keep payment status separate from fulfillment status.
+
+Allow authorized admins to:
+- Search orders by number, customer, or phone.
+- Filter by date, payment method, and status.
+- View order details.
+- Confirm or cancel orders.
+- Update payment verification.
+- Update fulfillment status.
+- Add tracking information.
+- Add internal notes.
+- Record refunds.
+- Export order reports to CSV.
+- View email delivery history.
+
+Preserve an audit trail of important changes.
+
+## 12. AUTOMATIC ORDER CONFIRMATION EMAILS
+
+Implement a real transactional email system using Resend, SendGrid, or another supported email provider.
+
+Use server-side credentials and verify the sender domain where required.
+
+### Customer order confirmation
+
+Whenever an order has been successfully created in the database, automatically send an order confirmation email.
+
+Include:
+- Store logo and branding.
+- Customer name.
+- Order number.
+- Order date.
+- Purchased items.
+- Selected sizes and colors.
+- Item quantities.
+- Item prices.
+- Discounts.
+- Shipping fees.
+- Total payable.
+- Selected payment method.
+- Current payment status.
+- Delivery address.
+- Estimated delivery information when available.
+- Customer support details.
+- Order tracking link when available.
+
+Payment-specific wording:
+- COD: "Your payment is due when your order is delivered."
+- Easypaisa or JazzCash manual payment: "Your payment is awaiting verification."
+- Verified online payment: "Your payment has been successfully verified."
+
+Never claim that payment was received without verification.
+
+### Additional email automation
+
+Send:
+1. Order confirmation to the customer.
+2. New-order notification to the configured store administrator.
+3. Payment verification confirmation when appropriate.
+4. Shipping confirmation when tracking information is added.
+5. Delivery notification when the order is marked delivered.
+6. Cancellation confirmation.
+7. Refund status notification.
+8. Password reset emails for supported customer accounts.
+9. Newsletter confirmation where double opt-in is enabled.
+
+### Email administration
+
+Create an Email Settings and Email Logs section.
+
+Allow the admin to:
+- Configure the store notification email address.
+- Edit supported email templates.
+- Edit the sender name and configured sender address.
+- Preview emails.
+- Send a test email.
+- View sent, pending, failed, and retried emails.
+- Retry failed email deliveries.
+- View timestamps and provider message IDs where available.
+
+Use an email queue or durable notification table with background processing or scheduled retries.
+
+Create unique event identifiers to prevent duplicate confirmation emails when processing is retried.
+
+The order must remain saved even if the email provider is temporarily unavailable. Record the email failure and retry it.
+
+Do not simulate a sent email when no provider is configured.
+
+## 13. ALIEXPRESS DROPSHIPPING INTEGRATION
+
+Create a supplier management system.
+
+For each supplier product, store:
+- Supplier name.
+- Supplier product URL.
+- Supplier product ID.
+- Supplier SKU.
+- Supplier variant mapping.
+- Supplier cost.
+- Last checked price.
+- Last checked availability.
+- Estimated processing time.
+- Shipping method.
+- Supplier order reference.
+- Tracking number when available.
+
+Support product imports through a legitimate compatible integration or a documented manual import process.
+
+Support price and inventory synchronization only when the integration provides it.
+
+For each paid or confirmed order:
+- Identify products that need supplier fulfillment.
+- Display the correct supplier product and variant.
+- Allow the admin to record the supplier order reference.
+- Track supplier processing and shipping.
+- Record the tracking number.
+- Notify the admin when a supplier product becomes unavailable.
+- Allow the admin to manage delays and failed fulfillment.
+
+Automated supplier ordering must use an authorized integration and be clearly distinguished from manual fulfillment.
+
+Never claim AliExpress order placement, real-time tracking, or automatic product synchronization is active before the required integration is connected and tested.
+
+Do not automatically send a supplier order until the store's order confirmation and payment/COD verification rules have been satisfied.
+
+## 14. DATABASE AND BACKEND ARCHITECTURE
+
+Use Supabase as the preferred backend, including:
+- Supabase PostgreSQL database.
+- Supabase Authentication.
+- Supabase Storage for product images and approved media.
+- Row Level Security policies.
+- Secure server-side functions for privileged operations.
+
+Use a modern frontend such as React with TypeScript, or Next.js with TypeScript if suitable for the selected builder.
+
+Use reusable components and maintain a clean project structure.
+
+Create appropriate database tables for:
+- Products.
+- Product variants.
+- Categories.
+- Product images.
+- Inventory records.
+- Discounts.
+- Coupons.
+- Orders.
+- Order items.
+- Customers or customer profiles.
+- Payment transactions.
+- Payment settings.
+- Suppliers.
+- Supplier products.
+- Fulfillment records.
+- Shipping and tracking.
+- Store settings.
+- Announcement bars.
+- Popup campaigns.
+- Popup events and analytics.
+- Email templates.
+- Email notification queue.
+- Email delivery logs.
+- Admin roles and permissions.
+- Audit logs.
+
+Use appropriate foreign keys, indexes, constraints, timestamps, and deletion rules.
+
+Save order-item snapshots so past orders remain correct even when product information changes.
+
+Use migrations or repeatable schema setup scripts so the database can be recreated and deployed safely.
+
+### Security requirements
+
+- Enable Row Level Security on relevant tables.
+- Deny public access to private customer records, orders, payment records, and admin settings.
+- Restrict administrative writes to authorized admin roles.
+- Never trust a role supplied by the browser.
+- Keep privileged service keys on the server only.
+- Validate all user input on the server.
+- Use secure authentication and session handling.
+- Protect admin operations against unauthorized access.
+- Rate-limit sensitive endpoints where appropriate.
+- Avoid exposing private customer information through logs or public APIs.
+- Store only the personal information needed to fulfill orders.
+- Implement safe error handling without leaking credentials.
+
+Do not use local storage as the main database for products, orders, payment settings, or admin accounts.
+
+Local storage may be used for non-sensitive presentation preferences, such as popup frequency, where appropriate.
+
+## 15. ADMIN SETTINGS AND STORE CUSTOMIZATION
+
+Create a central Store Settings page.
+
+Allow the administrator to update:
+- Store name.
+- Logo.
+- Brand colors.
+- Contact email.
+- Support phone number.
+- Currency.
+- Shipping areas.
+- Delivery charges.
+- Free-shipping threshold.
+- Delivery estimates.
+- Tax configuration.
+- Return policy content.
+- Social media links.
+- Homepage hero content.
+- Homepage banners.
+- Announcement bar.
+- Popup campaigns.
+- Payment methods.
+- Email templates.
+- Newsletter settings.
+- SEO defaults.
+
+All ordinary content and store settings must persist in the database and update the website without a code change or redeployment.
+
+Changes to backend secrets, authentication providers, or deployment-level configuration may still require secure infrastructure setup.
+
+## 16. SEO, PERFORMANCE AND ACCESSIBILITY
+
+Implement:
+- SEO-friendly URLs.
+- Editable meta titles and descriptions.
+- Product structured data where appropriate.
+- XML sitemap.
+- Robots.txt.
+- Canonical URLs.
+- Optimized images.
+- Lazy loading where appropriate.
+- Fast page navigation.
+- Responsive layouts.
+- Accessible forms and buttons.
+- Keyboard-accessible popups.
+- Descriptive image alt text.
+- Clear validation messages.
+- Useful loading and error states.
+
+Build blog templates for:
+- Newborn Clothing Essentials.
+- Choosing the Correct Baby Clothing Size.
+- Newborn Hospital Bag Checklist.
+- Washing and Caring for Baby Clothes.
+- Seasonal Baby Clothing.
+- Newborn Gift Ideas.
+
+Use original descriptions and avoid unsupported medical claims.
+
+## 17. DEPLOYMENT AND CONFIGURATION
+
+Prepare the website for deployment to Vercel or another suitable host.
+
+Provide:
+- Complete source code.
+- Database schema and migrations.
+- Setup instructions.
+- Environment variable examples.
+- Supabase setup instructions.
+- Admin account initialization instructions.
+- Storage bucket and security policy setup.
+- Transactional email configuration.
+- Payment gateway configuration.
+- AliExpress supplier integration instructions.
+- Deployment instructions.
+- Testing checklist.
+- Troubleshooting instructions.
+
+Use environment variables for secrets, including appropriate values for:
+- Public Supabase project URL.
+- Public Supabase anonymous/publishable key.
+- Server-side Supabase service credentials where needed.
+- Transactional email API key.
+- Payment gateway credentials.
+- Webhook secrets.
+
+Use the exact environment variable names expected by the chosen implementation. Never place secret service-role keys or private payment credentials in public frontend variables.
+
+Provide a secure one-time admin bootstrap procedure. Do not publish a default admin password or create a publicly accessible admin registration page.
+
+## 18. REQUIRED END-TO-END TESTS
+
+Before declaring the website ready, test the following:
+
+1. A visitor can browse products and categories.
+2. An admin can securely log in.
+3. An admin can add, edit, archive, and delete products.
+4. Product variants and availability work correctly.
+5. Discounts and coupon codes are calculated on the server.
+6. Unavailable products cannot be purchased.
+7. The cart and checkout totals are accurate.
+8. A COD order is saved and receives a confirmation email.
+9. The store administrator receives a new-order notification.
+10. Easypaisa can be enabled and disabled.
+11. JazzCash can be enabled and disabled.
+12. COD can be enabled and disabled.
+13. Manual payments remain pending until verified.
+14. Verified payment updates the payment status correctly.
+15. Popup campaigns can be created, scheduled, previewed, published, paused, and disabled.
+16. Popup frequency rules work across page navigation.
+17. Announcement bar text and visibility can be changed from admin.
+18. Expired popup campaigns are not displayed.
+19. Email failures are logged and retried.
+20. Email retries do not create duplicate orders or duplicate confirmation messages.
+21. Shipping updates trigger the correct email.
+22. Product edits do not change historical order snapshots.
+23. Unauthorized visitors cannot access private admin data.
+24. Payment settings and secret credentials cannot be exposed through public APIs.
+25. The website works on mobile and desktop.
+
+Use a sandbox or test environment for payment integration testing.
+
+## 19. FINAL DELIVERY REQUIREMENTS
+
+Build the actual connected application, including the frontend, backend, database, secure admin dashboard, product management, discounts, inventory, configurable payment methods, announcement management, popup campaigns, order management, email automation, and supplier fulfillment workflows.
+
+Do not stop after generating a homepage or visual mockup.
+
+Implement the database and backend first, then connect the admin dashboard and customer storefront to the same persistent data.
+
+If an external integration requires merchant approval, API credentials, or additional configuration, build the appropriate integration interface and clearly document the remaining setup steps.
+
+Never pretend that payments, emails, supplier synchronization, or automated fulfillment work until they have been configured and tested.
+
+The finished store should be elegant, secure, manageable without coding, and suitable for a real newborn clothing dropshipping business targeting customers in Pakistan, with the flexibility to expand internationally later.

@@ -1,0 +1,801 @@
+{
+  "products": [
+    {
+      "id": "prod-1",
+      "name": "Organic Ribbed Knit Newborn Romper",
+      "slug": "organic-ribbed-knit-newborn-romper",
+      "shortDescription": "Ultra-soft 100% GOTS certified ribbed cotton with natural coconut buttons for sensitive newborn skin.",
+      "fullDescription": "Crafted from breathable, stretchy organic ribbed cotton, this heirloom-quality romper keeps your baby comfortable through slumber and snuggle sessions. Features smooth flatlock seams, easy-snap diaper access, and genuine coconut shell buttons.",
+      "category": "sleepsuits-and-rompers",
+      "categoryName": "Sleepsuits & Rompers",
+      "regularPrice": 2850,
+      "salePrice": 2450,
+      "costPrice": 980,
+      "currency": "PKR",
+      "sku": "LN-ROMP-01",
+      "supplierName": "AliExpress Baby Direct Store",
+      "supplierProductUrl": "https://aliexpress.com/item/10050062819203.html",
+      "supplierSku": "ALI-RIB-ROMP-SAGE",
+      "materialDetails": "95% Organic Cotton, 5% Elastane for gentle stretch.",
+      "washingInstructions": "Machine wash delicate cold (30°C). Lay flat to dry. Do not bleach.",
+      "sizeGuide": "0-3M (Up to 60cm / 5.5kg), 3-6M (60-68cm / 7.5kg), 6-12M (68-76cm / 9.5kg)",
+      "availableColors": [
+        "Sage Green",
+        "Oat Beige",
+        "Blush Pink",
+        "Warm Ivory"
+      ],
+      "availableSizes": [
+        "0-3M",
+        "3-6M",
+        "6-12M"
+      ],
+      "images": [
+        "/src/assets/images/product_knit_romper_1793176728603.jpg",
+        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+      ],
+      "weightGrams": 160,
+      "status": "published",
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNewArrival": false,
+      "isNewbornEssential": true,
+      "genderCollection": "unisex",
+      "stockQuantity": 44,
+      "lowStockThreshold": 8,
+      "supplierStockStatus": "in_stock",
+      "supplierLastChecked": "2026-10-28T01:00:00Z",
+      "createdAt": "2026-10-15T10:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-2",
+      "name": "Botanical Muslin Swaddle Wrap & Knot Beanie Set",
+      "slug": "botanical-muslin-swaddle-wrap-knot-beanie-set",
+      "shortDescription": "Breathable 4-layer pure organic muslin blanket with matching adjustable top-knot beanie.",
+      "fullDescription": "Generously sized at 120cm x 120cm, our premium double-gauze bamboo-cotton swaddle blanket mimics the comforting snugness of the womb. Breathable weave reduces the risk of overheating while softening with every wash.",
+      "category": "blankets-and-swaddles",
+      "categoryName": "Blankets & Swaddles",
+      "regularPrice": 2200,
+      "salePrice": 1850,
+      "costPrice": 720,
+      "currency": "PKR",
+      "sku": "LN-SWAD-02",
+      "supplierName": "AliExpress Textile Baby Factory",
+      "supplierProductUrl": "https://aliexpress.com/item/10050058291044.html",
+      "supplierSku": "ALI-SWAD-LEAF-BLUSH",
+      "materialDetails": "70% Bamboo Viscose, 30% Long-staple Organic Cotton.",
+      "washingInstructions": "Gentle hand or machine wash cool. Tumble dry low or air dry in shade.",
+      "sizeGuide": "One Size Swaddle (120x120 cm), Beanie fits 0-6 Months.",
+      "availableColors": [
+        "Blush Pink Botanical",
+        "Sage Meadow",
+        "Oat Flora"
+      ],
+      "availableSizes": [
+        "Newborn (0-6M)"
+      ],
+      "images": [
+        "/src/assets/images/product_swaddle_set_1793176729232.jpg",
+        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+      ],
+      "weightGrams": 210,
+      "status": "published",
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNewArrival": true,
+      "isNewbornEssential": true,
+      "genderCollection": "baby-girl",
+      "stockQuantity": 38,
+      "lowStockThreshold": 5,
+      "supplierStockStatus": "in_stock",
+      "supplierLastChecked": "2026-10-28T01:00:00Z",
+      "createdAt": "2026-10-18T12:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-3",
+      "name": "Luxury Newborn Welcome Keepsake Gift Box",
+      "slug": "luxury-newborn-welcome-keepsake-gift-box",
+      "shortDescription": "Complete 5-piece nursery hamper: waffle blanket, star sleepsuit, natural wood rattle, handknit booties, gift box.",
+      "fullDescription": "The ultimate baby shower and hospital homecoming gift. Packaged in a rigid linen-textured presentation box tied with a grosgrain ribbon and wooden 'Welcome Little One' tag. Includes a plush honeycomb waffle throw, modal sleepsuit, artisan wooden rattle, and hand-crocheted bootie socks.",
+      "category": "newborn-gift-sets",
+      "categoryName": "Newborn Gift Sets",
+      "regularPrice": 5950,
+      "salePrice": 5200,
+      "costPrice": 2200,
+      "currency": "PKR",
+      "sku": "LN-GIFT-03",
+      "supplierName": "AliExpress Newborn Hampers Co.",
+      "supplierProductUrl": "https://aliexpress.com/item/10050071940291.html",
+      "supplierSku": "ALI-GIFT-WAFFLE-5PC",
+      "materialDetails": "Pure combed cotton, chemical-free raw beechwood, water-based natural wax polish.",
+      "washingInstructions": "Textiles: 30°C gentle cycle. Wooden rattle: wipe clean with damp cloth, do not submerge.",
+      "sizeGuide": "Perfect for newborns 0-3 Months.",
+      "availableColors": [
+        "Warm Ivory & Oat",
+        "Earthy Sage",
+        "Soft Rose"
+      ],
+      "availableSizes": [
+        "0-3M"
+      ],
+      "images": [
+        "/src/assets/images/product_gift_bundle_1793176729526.jpg",
+        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+      ],
+      "weightGrams": 650,
+      "status": "published",
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNewArrival": false,
+      "isNewbornEssential": true,
+      "genderCollection": "unisex",
+      "stockQuantity": 19,
+      "lowStockThreshold": 5,
+      "supplierStockStatus": "in_stock",
+      "supplierLastChecked": "2026-10-28T01:00:00Z",
+      "createdAt": "2026-10-12T08:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-4",
+      "name": "Cozy Cable-Knit Baby Booties & Bonnet Set",
+      "slug": "cozy-cable-knit-baby-booties-bonnet-set",
+      "shortDescription": "Charming hand-crafted cotton-wool blend knit booties with stay-on ties and matching ear-cover bonnet.",
+      "fullDescription": "Designed specifically to keep tiny extremities warm without irritation. The booties feature gentle ribbon-ties that prevent slipping off restless kicking feet, paired with an adjustable chin-tie pixie bonnet.",
+      "category": "socks-hats-and-mittens",
+      "categoryName": "Socks, Hats & Mittens",
+      "regularPrice": 1750,
+      "salePrice": 1450,
+      "costPrice": 510,
+      "currency": "PKR",
+      "sku": "LN-BOOT-04",
+      "supplierName": "AliExpress Baby Direct Store",
+      "supplierProductUrl": "https://aliexpress.com/item/10050064119302.html",
+      "supplierSku": "ALI-KNIT-BOOT-BEIGE",
+      "materialDetails": "85% Soft Combed Cotton, 15% Fine Merino Wool (non-itch).",
+      "washingInstructions": "Hand wash with mild baby detergent. Air dry flat.",
+      "sizeGuide": "0-6M (Bootie sole length: 9.5cm).",
+      "availableColors": [
+        "Oatmeal Beige",
+        "Cream White",
+        "Dusty Sage"
+      ],
+      "availableSizes": [
+        "0-6M"
+      ],
+      "images": [
+        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+        "/src/assets/images/product_knit_romper_1793176728603.jpg"
+      ],
+      "weightGrams": 95,
+      "status": "published",
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNewArrival": true,
+      "isNewbornEssential": true,
+      "genderCollection": "unisex",
+      "stockQuantity": 32,
+      "lowStockThreshold": 6,
+      "supplierStockStatus": "in_stock",
+      "supplierLastChecked": "2026-10-28T01:00:00Z",
+      "createdAt": "2026-10-20T09:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-5",
+      "name": "Cloud-Soft Waffle Knit Sleepsuit with Fold-over Mittens",
+      "slug": "cloud-soft-waffle-knit-sleepsuit",
+      "shortDescription": "Textured honeycomb waffle cotton sleepsuit with built-in scratch mitts and two-way safety zipper.",
+      "fullDescription": "Sleep comfortably without midnight diaper struggle. Features an enclosed two-way protective zipper with top fabric chin guard and fold-over cuff mittens to protect delicate skin from newborn fingernail scratches.",
+      "category": "sleepsuits-and-rompers",
+      "categoryName": "Sleepsuits & Rompers",
+      "regularPrice": 2650,
+      "salePrice": 2250,
+      "costPrice": 910,
+      "currency": "PKR",
+      "sku": "LN-SLP-05",
+      "supplierName": "AliExpress Baby Direct Store",
+      "supplierProductUrl": "https://aliexpress.com/item/10050068994321.html",
+      "supplierSku": "ALI-WAFFLE-SLP-OAT",
+      "materialDetails": "100% Breathable Waffle Weave Cotton.",
+      "washingInstructions": "Machine wash cold. Tumble dry delicate or line dry.",
+      "sizeGuide": "0-3M (Up to 60cm), 3-6M (60-68cm), 6-12M (68-76cm)",
+      "availableColors": [
+        "Oat Beige",
+        "Earthy Sage",
+        "Warm Ivory"
+      ],
+      "availableSizes": [
+        "0-3M",
+        "3-6M",
+        "6-12M"
+      ],
+      "images": [
+        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+        "/src/assets/images/product_knit_romper_1793176728603.jpg"
+      ],
+      "weightGrams": 180,
+      "status": "published",
+      "isFeatured": false,
+      "isBestSeller": true,
+      "isNewArrival": true,
+      "isNewbornEssential": true,
+      "genderCollection": "baby-boy",
+      "stockQuantity": 24,
+      "lowStockThreshold": 5,
+      "supplierStockStatus": "in_stock",
+      "supplierLastChecked": "2026-10-28T01:00:00Z",
+      "createdAt": "2026-10-22T14:30:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-6",
+      "name": "3-Pack Organic Cotton Essential Newborn Bodysuits",
+      "slug": "3-pack-organic-cotton-essential-bodysuits",
+      "shortDescription": "Triple-pack of expandable envelope-neck bodysuits in complementary neutral earthy hues.",
+      "fullDescription": "The daily foundation of every newborn's wardrobe. Envelope shoulders stretch easily downwards over shoulders for mess-free diaper mishaps. Includes 3 coordinating shades: Oat, Warm Ivory, and Soft Sage.",
+      "category": "sleepsuits-and-rompers",
+      "categoryName": "Sleepsuits & Rompers",
+      "regularPrice": 3400,
+      "salePrice": 2950,
+      "costPrice": 1150,
+      "currency": "PKR",
+      "sku": "LN-BODY-06",
+      "supplierName": "AliExpress Textile Baby Factory",
+      "supplierProductUrl": "https://aliexpress.com/item/10050073219012.html",
+      "supplierSku": "ALI-3PK-BODY-EARTH",
+      "materialDetails": "100% Ring-Spun Organic Cotton, Nickel-free poppers.",
+      "washingInstructions": "Machine wash warm 40°C. Suitable for tumble drying.",
+      "sizeGuide": "0-3M, 3-6M, 6-12M",
+      "availableColors": [
+        "Earth Tones Trio (Oat/Sage/Ivory)"
+      ],
+      "availableSizes": [
+        "0-3M",
+        "3-6M",
+        "6-12M"
+      ],
+      "images": [
+        "/src/assets/images/product_knit_romper_1793176728603.jpg",
+        "/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+      ],
+      "weightGrams": 240,
+      "status": "published",
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNewArrival": false,
+      "isNewbornEssential": true,
+      "genderCollection": "unisex",
+      "stockQuantity": 52,
+      "lowStockThreshold": 10,
+      "supplierStockStatus": "in_stock",
+      "supplierLastChecked": "2026-10-28T01:00:00Z",
+      "createdAt": "2026-10-10T11:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-1",
+      "name": "Sleepsuits & Rompers",
+      "slug": "sleepsuits-and-rompers",
+      "description": "Buttery soft ribbed and waffle sleepsuits crafted for cozy naps and newborn comfort.",
+      "image": "/src/assets/images/product_knit_romper_1793176728603.jpg",
+      "productCount": 3
+    },
+    {
+      "id": "cat-2",
+      "name": "Blankets & Swaddles",
+      "slug": "blankets-and-swaddles",
+      "description": "Double-gauze breathable muslin and honeycomb knit blankets for serene snoozing.",
+      "image": "/src/assets/images/product_swaddle_set_1793176729232.jpg",
+      "productCount": 1
+    },
+    {
+      "id": "cat-3",
+      "name": "Socks, Hats & Mittens",
+      "slug": "socks-hats-and-mittens",
+      "description": "Stay-on bootie socks, knotted beanies, and scratch mittens in soothing natural colors.",
+      "image": "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+      "productCount": 1
+    },
+    {
+      "id": "cat-4",
+      "name": "Newborn Gift Sets",
+      "slug": "newborn-gift-sets",
+      "description": "Thoughtfully curated keepsake gift hampers and hospital-bag starter bundles.",
+      "image": "/src/assets/images/product_gift_bundle_1793176729526.jpg",
+      "productCount": 1
+    }
+  ],
+  "coupons": [
+    {
+      "id": "coup-1",
+      "code": "LITTLE10",
+      "description": "10% off your entire order for welcome celebration",
+      "discountType": "percentage",
+      "value": 10,
+      "minCartTotal": 1500,
+      "freeShipping": false,
+      "usageLimit": 500,
+      "usageCount": 15,
+      "isActive": true
+    },
+    {
+      "id": "coup-2",
+      "code": "WELCOME15",
+      "description": "15% off orders over Rs. 3,000",
+      "discountType": "percentage",
+      "value": 15,
+      "minCartTotal": 3000,
+      "freeShipping": false,
+      "usageLimit": 200,
+      "usageCount": 8,
+      "isActive": true
+    },
+    {
+      "id": "coup-3",
+      "code": "FREESHIP",
+      "description": "Free standard shipping nationwide",
+      "discountType": "fixed",
+      "value": 0,
+      "minCartTotal": 0,
+      "freeShipping": true,
+      "usageLimit": 1000,
+      "usageCount": 29,
+      "isActive": true
+    },
+    {
+      "id": "coup-4",
+      "code": "BABYNEST",
+      "description": "Flat Rs. 500 off nursery orders over Rs. 4,000",
+      "discountType": "fixed",
+      "value": 500,
+      "minCartTotal": 4000,
+      "freeShipping": false,
+      "usageLimit": 100,
+      "usageCount": 5,
+      "isActive": true
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord-1793177893670",
+      "orderNumber": "LN-85361",
+      "customerName": "Mariam Khan",
+      "email": "mariam.khan@example.com",
+      "phone": "0300-9988776",
+      "deliveryAddress": {
+        "fullName": "Mariam Khan",
+        "email": "mariam.khan@example.com",
+        "phone": "0300-9988776",
+        "streetAddress": "House 12, Street 4, F-7/2",
+        "city": "Islamabad",
+        "province": "Islamabad Capital Territory"
+      },
+      "items": [
+        {
+          "productId": "prod-1",
+          "productName": "Organic Ribbed Knit Newborn Romper",
+          "variantColor": "Sage Green",
+          "variantSize": "0-3M",
+          "quantity": 1,
+          "unitPrice": 2450,
+          "totalPrice": 2450,
+          "image": "/src/assets/images/product_knit_romper_1793176728603.jpg",
+          "supplierSku": "ALI-RIB-ROMP-SAGE",
+          "supplierUrl": "https://aliexpress.com/item/10050062819203.html"
+        }
+      ],
+      "subtotal": 2450,
+      "discountAmount": 245,
+      "couponCode": "LITTLE10",
+      "shippingFee": 250,
+      "taxAmount": 0,
+      "total": 2455,
+      "currency": "PKR",
+      "paymentMethod": "cod",
+      "paymentStatus": "pending",
+      "paymentReference": null,
+      "fulfillmentStatus": "pending_confirmation",
+      "courierName": null,
+      "trackingNumber": null,
+      "supplierOrderRef": null,
+      "orderNotes": "",
+      "internalNotes": "",
+      "auditLog": [
+        {
+          "timestamp": "2026-10-28T08:58:13.670Z",
+          "actor": "Customer Checkout",
+          "action": "Order Placed",
+          "details": "Order placed via COD. Total: Rs. 2,455"
+        }
+      ],
+      "createdAt": "2026-10-28T08:58:13.670Z",
+      "updatedAt": "2026-10-28T08:58:13.670Z"
+    },
+    {
+      "id": "ord-101",
+      "orderNumber": "LN-10821",
+      "customerName": "Ayesha Malik",
+      "email": "ayesha.malik@example.com",
+      "phone": "0302-8877112",
+      "deliveryAddress": {
+        "fullName": "Ayesha Malik",
+        "email": "ayesha.malik@example.com",
+        "phone": "0302-8877112",
+        "streetAddress": "House 42-B, Street 7, Phase 5, DHA",
+        "city": "Lahore",
+        "province": "Punjab",
+        "postalCode": "54000",
+        "orderNotes": "Please ring bell and leave with front security if unavailable."
+      },
+      "items": [
+        {
+          "productId": "prod-1",
+          "productName": "Organic Ribbed Knit Newborn Romper",
+          "variantColor": "Sage Green",
+          "variantSize": "0-3M",
+          "quantity": 1,
+          "unitPrice": 2450,
+          "totalPrice": 2450,
+          "image": "/src/assets/images/product_knit_romper_1793176728603.jpg",
+          "supplierSku": "ALI-RIB-ROMP-SAGE",
+          "supplierUrl": "https://aliexpress.com/item/10050062819203.html"
+        },
+        {
+          "productId": "prod-2",
+          "productName": "Botanical Muslin Swaddle Wrap & Knot Beanie Set",
+          "variantColor": "Blush Pink Botanical",
+          "variantSize": "Newborn (0-6M)",
+          "quantity": 1,
+          "unitPrice": 1850,
+          "totalPrice": 1850,
+          "image": "/src/assets/images/product_swaddle_set_1793176729232.jpg",
+          "supplierSku": "ALI-SWAD-LEAF-BLUSH",
+          "supplierUrl": "https://aliexpress.com/item/10050058291044.html"
+        }
+      ],
+      "subtotal": 4300,
+      "discountAmount": 430,
+      "couponCode": "LITTLE10",
+      "shippingFee": 0,
+      "taxAmount": 0,
+      "total": 3870,
+      "currency": "PKR",
+      "paymentMethod": "cod",
+      "paymentStatus": "pending",
+      "fulfillmentStatus": "confirmed",
+      "courierName": "TCS Express",
+      "trackingNumber": "TCS-9281734",
+      "supplierOrderRef": "ALI-ORD-9021",
+      "orderNotes": "Please ring bell and leave with front security if unavailable.",
+      "internalNotes": "Customer called for size confirmation. Confirmed 0-3M.",
+      "auditLog": [
+        {
+          "timestamp": "2026-10-27T10:14:00Z",
+          "actor": "Customer",
+          "action": "Order Placed",
+          "details": "Order placed using Cash on Delivery (COD)."
+        },
+        {
+          "timestamp": "2026-10-27T11:30:00Z",
+          "actor": "Admin (Store Owner)",
+          "action": "Order Confirmed",
+          "details": "Customer phone verification completed. AliExpress supplier order placed."
+        }
+      ],
+      "createdAt": "2026-10-27T10:14:00Z",
+      "updatedAt": "2026-10-27T11:30:00Z"
+    },
+    {
+      "id": "ord-102",
+      "orderNumber": "LN-10822",
+      "customerName": "Bilal Ahmed",
+      "email": "bilal.ahmed@example.com",
+      "phone": "0321-4433221",
+      "deliveryAddress": {
+        "fullName": "Bilal Ahmed",
+        "email": "bilal.ahmed@example.com",
+        "phone": "0321-4433221",
+        "streetAddress": "Apartment 504, Clifton Block 4",
+        "city": "Karachi",
+        "province": "Sindh",
+        "postalCode": "75600",
+        "orderNotes": "Baby shower gift set for my sister."
+      },
+      "items": [
+        {
+          "productId": "prod-3",
+          "productName": "Luxury Newborn Welcome Keepsake Gift Box",
+          "variantColor": "Warm Ivory & Oat",
+          "variantSize": "0-3M",
+          "quantity": 1,
+          "unitPrice": 5200,
+          "totalPrice": 5200,
+          "image": "/src/assets/images/product_gift_bundle_1793176729526.jpg",
+          "supplierSku": "ALI-GIFT-WAFFLE-5PC",
+          "supplierUrl": "https://aliexpress.com/item/10050071940291.html"
+        }
+      ],
+      "subtotal": 5200,
+      "discountAmount": 500,
+      "couponCode": "BABYNEST",
+      "shippingFee": 0,
+      "taxAmount": 0,
+      "total": 4700,
+      "currency": "PKR",
+      "paymentMethod": "easypaisa",
+      "paymentStatus": "pending",
+      "paymentReference": "EP-88392109281",
+      "fulfillmentStatus": "pending_confirmation",
+      "supplierOrderRef": "",
+      "orderNotes": "Baby shower gift set for my sister.",
+      "internalNotes": "TRX reference EP-88392109281 submitted by customer. Awaiting admin bank portal check.",
+      "auditLog": [
+        {
+          "timestamp": "2026-10-28T00:45:00Z",
+          "actor": "Customer",
+          "action": "Order Placed",
+          "details": "Order placed with Easypaisa payment TRX ID: EP-88392109281."
+        }
+      ],
+      "createdAt": "2026-10-28T00:45:00Z",
+      "updatedAt": "2026-10-28T00:45:00Z"
+    }
+  ],
+  "paymentSettings": {
+    "cod": {
+      "enabled": true,
+      "fee": 0,
+      "minOrder": 500,
+      "maxOrder": 35000,
+      "instructions": "Pay exact cash to courier delivery associate upon receiving your parcel at your doorstep.",
+      "confirmationRequired": true
+    },
+    "easypaisa": {
+      "enabled": true,
+      "accountTitle": "Little Nest Baby Store",
+      "accountNumber": "0300 8765432",
+      "bankOrBranch": "Telenor Microfinance Bank",
+      "instructions": "Transfer payable total to Easypaisa account 0300 8765432 (Little Nest). Submit your 11-digit Transaction ID (TRX ID) below for instantaneous verification.",
+      "testMode": false,
+      "requiresTrxId": true
+    },
+    "jazzcash": {
+      "enabled": true,
+      "accountTitle": "Little Nest Baby Store",
+      "accountNumber": "0321 9876543",
+      "bankOrBranch": "Mobilink Microfinance Bank",
+      "instructions": "Send amount to JazzCash account 0321 9876543 (Little Nest). Provide your 12-digit TID from your confirmation SMS.",
+      "testMode": false,
+      "requiresTrxId": true
+    }
+  },
+  "announcementSettings": {
+    "enabled": true,
+    "backgroundColor": "#5A463C",
+    "textColor": "#FFFFFF",
+    "rotationEnabled": true,
+    "rotationIntervalSeconds": 5,
+    "messages": [
+      {
+        "id": "ann-1",
+        "text": "Welcome to Little Nest — Made for Your Little Love",
+        "link": "/shop",
+        "active": true
+      },
+      {
+        "id": "ann-2",
+        "text": "Free standard shipping across Pakistan on orders over Rs. 3,500",
+        "link": "/shop",
+        "active": true
+      },
+      {
+        "id": "ann-3",
+        "text": "Use code LITTLE10 for 10% off selected newborn essentials",
+        "link": "/shop",
+        "active": true
+      }
+    ]
+  },
+  "popupCampaigns": [
+    {
+      "id": "pop-1",
+      "name": "Welcome New Parents Discount",
+      "type": "welcome",
+      "headline": "A Little Love Awaits You",
+      "description": "Discover sweet newborn essentials made for life's most precious moments. Enjoy 10% off your first baby order.",
+      "couponCode": "LITTLE10",
+      "buttonText": "Explore the Collection",
+      "buttonLink": "/shop",
+      "imageUrl": "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+      "backgroundColor": "#FFF9F4",
+      "textColor": "#5A463C",
+      "buttonStyle": "solid_brown",
+      "layout": "image_text",
+      "delaySeconds": 4,
+      "displayFrequency": "once_per_day",
+      "targetPages": "all",
+      "deviceTarget": "all",
+      "status": "published",
+      "impressions": 128,
+      "clicks": 42,
+      "conversions": 14,
+      "createdAt": "2026-10-15T00:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    }
+  ],
+  "storeSettings": {
+    "brandName": "Little Nest",
+    "tagline": "Little Clothes for Life's Biggest Love",
+    "contactEmail": "care@littlenest.pk",
+    "supportPhone": "+92 300 8765432",
+    "currency": "PKR",
+    "currencySymbol": "Rs.",
+    "freeShippingThreshold": 3500,
+    "defaultShippingFee": 250,
+    "provinces": [
+      "Punjab",
+      "Sindh",
+      "Khyber Pakhtunkhwa",
+      "Balochistan",
+      "Islamabad Capital Territory",
+      "Azad Jammu & Kashmir",
+      "Gilgit-Baltistan"
+    ],
+    "heroHeadline": "Little Clothes for Life's Biggest Love.",
+    "heroDescription": "Discover thoughtfully selected newborn essentials for your tiniest treasures.",
+    "heroImage": "/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+    "heroButtonPrimary": "Shop the Collection",
+    "heroButtonSecondary": "Explore Newborn Essentials",
+    "socialLinks": {
+      "instagram": "https://instagram.com/littlenestbaby",
+      "facebook": "https://facebook.com/littlenestbaby",
+      "whatsapp": "+923008765432"
+    },
+    "returnPolicyContent": "We want you and your baby to love every item. We offer a 14-day hassle-free unworn return and exchange policy for complete peace of mind. Products must remain unwashed with tags intact.",
+    "shippingPolicyContent": "Orders are dispatched within 24-48 hours via TCS / Leopard Courier. Major cities (Karachi, Lahore, Islamabad, Rawalpindi) arrive within 2-3 business days. Nationwide deliveries take 3-5 business days.",
+    "aboutUsContent": "Little Nest was founded with a gentle commitment: to bring premium, certified non-toxic organic newborn essentials to loving families in Pakistan without boutique markup."
+  },
+  "suppliers": [
+    {
+      "id": "sup-1",
+      "productId": "prod-1",
+      "supplierName": "AliExpress Baby Direct Store",
+      "supplierStoreUrl": "https://aliexpress.com/store/91284712",
+      "supplierProductUrl": "https://aliexpress.com/item/10050062819203.html",
+      "supplierSku": "ALI-RIB-ROMP-SAGE",
+      "supplierCost": 980,
+      "ourSellingPrice": 2450,
+      "marginPercent": 60,
+      "shippingMethod": "AliExpress Standard Shipping / Direct Courier Line",
+      "estimatedDeliveryDays": "10-14 days",
+      "stockStatus": "in_stock",
+      "lastChecked": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "sup-2",
+      "productId": "prod-2",
+      "supplierName": "AliExpress Textile Baby Factory",
+      "supplierStoreUrl": "https://aliexpress.com/store/88410294",
+      "supplierProductUrl": "https://aliexpress.com/item/10050058291044.html",
+      "supplierSku": "ALI-SWAD-LEAF-BLUSH",
+      "supplierCost": 720,
+      "ourSellingPrice": 1850,
+      "marginPercent": 61,
+      "shippingMethod": "AliExpress Saver Shipping",
+      "estimatedDeliveryDays": "10-15 days",
+      "stockStatus": "in_stock",
+      "lastChecked": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "sup-3",
+      "productId": "prod-3",
+      "supplierName": "AliExpress Newborn Hampers Co.",
+      "supplierStoreUrl": "https://aliexpress.com/store/77321980",
+      "supplierProductUrl": "https://aliexpress.com/item/10050071940291.html",
+      "supplierSku": "ALI-GIFT-WAFFLE-5PC",
+      "supplierCost": 2200,
+      "ourSellingPrice": 5200,
+      "marginPercent": 57,
+      "shippingMethod": "Special Line Baby Hampers Express",
+      "estimatedDeliveryDays": "8-12 days",
+      "stockStatus": "in_stock",
+      "lastChecked": "2026-10-28T01:00:00Z"
+    }
+  ],
+  "emailTemplates": [
+    {
+      "id": "order_confirmation_customer",
+      "name": "Customer Order Confirmation",
+      "subject": "Order Confirmed: {{orderNumber}} — Little Nest",
+      "description": "Sent automatically as soon as an order is created in database.",
+      "bodyHtml": "<h1>Thank you for your order, {{customerName}}!</h1><p>We're preparing your Little Nest newborn essentials.</p><p><strong>Order Number:</strong> {{orderNumber}}<br><strong>Total:</strong> Rs. {{total}}<br><strong>Payment Method:</strong> {{paymentMethodNote}}</p>",
+      "variables": [
+        "customerName",
+        "orderNumber",
+        "total",
+        "items",
+        "deliveryAddress",
+        "paymentMethodNote",
+        "trackingUrl"
+      ]
+    },
+    {
+      "id": "new_order_admin",
+      "name": "Admin New Order Alert",
+      "subject": "🎉 New Order Received: {{orderNumber}} (Rs. {{total}})",
+      "description": "Alert sent to store owner for fulfillment triage.",
+      "bodyHtml": "<p>A new order was placed by {{customerName}} ({{phone}}).</p><p>Fulfill via AliExpress supplier portal.</p>",
+      "variables": [
+        "customerName",
+        "orderNumber",
+        "total",
+        "phone",
+        "city"
+      ]
+    },
+    {
+      "id": "shipping_confirmation",
+      "name": "Shipping Confirmation with Courier Tracking",
+      "subject": "Your Little Nest parcel has shipped! (Tracking: {{trackingNumber}})",
+      "description": "Triggered when tracking number and courier are assigned.",
+      "bodyHtml": "<p>Good news! Your parcel is on its way with {{courierName}}.</p><p>Tracking Number: <strong>{{trackingNumber}}</strong></p>",
+      "variables": [
+        "customerName",
+        "orderNumber",
+        "courierName",
+        "trackingNumber"
+      ]
+    }
+  ],
+  "emailLogs": [
+    {
+      "id": "em-1793177893716-1",
+      "recipient": "mariam.khan@example.com",
+      "subject": "Order Confirmed: LN-85361 — Little Nest",
+      "templateId": "order_confirmation_customer",
+      "orderNumber": "LN-85361",
+      "status": "sent",
+      "retryCount": 0,
+      "sentAt": "2026-10-28T08:58:13.670Z",
+      "createdAt": "2026-10-28T08:58:13.670Z"
+    },
+    {
+      "id": "em-1793177893716-2",
+      "recipient": "care@littlenest.pk",
+      "subject": "🎉 New Order Received: LN-85361 (Rs. 2,455)",
+      "templateId": "new_order_admin",
+      "orderNumber": "LN-85361",
+      "status": "sent",
+      "retryCount": 0,
+      "sentAt": "2026-10-28T08:58:13.670Z",
+      "createdAt": "2026-10-28T08:58:13.670Z"
+    },
+    {
+      "id": "em-1",
+      "recipient": "ayesha.malik@example.com",
+      "subject": "Order Confirmed: LN-10821 — Little Nest",
+      "templateId": "order_confirmation_customer",
+      "orderNumber": "LN-10821",
+      "status": "sent",
+      "sentAt": "2026-10-27T10:14:05Z",
+      "retryCount": 0,
+      "createdAt": "2026-10-27T10:14:02Z"
+    },
+    {
+      "id": "em-2",
+      "recipient": "care@littlenest.pk",
+      "subject": "🎉 New Order Received: LN-10821 (Rs. 3870)",
+      "templateId": "new_order_admin",
+      "orderNumber": "LN-10821",
+      "status": "sent",
+      "sentAt": "2026-10-27T10:14:06Z",
+      "retryCount": 0,
+      "createdAt": "2026-10-27T10:14:02Z"
+    }
+  ]
+}

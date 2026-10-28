@@ -1,0 +1,6 @@
+{
+  "name": "Little Nest — Newborn Baby Clothing",
+  "description": "Premium newborn baby clothing, organic cotton rompers, swaddles, and gift sets with dropshipping management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
