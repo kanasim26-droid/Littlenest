@@ -56,7 +56,7 @@ export const AdminProducts: React.FC = () => {
       sizeGuide: '0-3M (Up to 60cm / 5.5kg), 3-6M (60-68cm / 7.5kg)',
       availableColors: ['Oat Beige', 'Sage Green', 'Warm Ivory'],
       availableSizes: ['0-3M', '3-6M', '6-12M'],
-      images: ['/src/assets/images/hero_newborn_clothing_1793176730078.jpg'],
+      images: ['https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg'],
       weightGrams: 150,
       status: 'published',
       isFeatured: false,
