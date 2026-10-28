@@ -1,0 +1,277 @@
+{
+  "products": [
+    {
+      "id": "prod-1",
+      "name": "Organic Ribbed Knit Newborn Romper",
+      "slug": "organic-ribbed-knit-newborn-romper",
+      "shortDescription": "Ultra-soft 100% GOTS certified ribbed cotton with natural coconut buttons for sensitive newborn skin.",
+      "fullDescription": "Crafted from breathable, stretchy organic ribbed cotton, this heirloom-quality romper keeps your baby comfortable through slumber and snuggle sessions. Features smooth flatlock seams, easy-snap diaper access, and genuine coconut shell buttons.",
+      "category": "sleepsuits-and-rompers",
+      "categoryName": "Sleepsuits & Rompers",
+      "regularPrice": 2850,
+      "salePrice": 2450,
+      "currency": "PKR",
+      "sku": "LN-ROMP-01",
+      "materialDetails": "95% Organic Cotton, 5% Elastane for gentle stretch.",
+      "washingInstructions": "Machine wash delicate cold (30°C). Lay flat to dry. Do not bleach.",
+      "sizeGuide": "0-3M (Up to 60cm / 5.5kg), 3-6M (60-68cm / 7.5kg), 6-12M (68-76cm / 9.5kg)",
+      "availableColors": [
+        "Sage Green",
+        "Oat Beige",
+        "Blush Pink",
+        "Warm Ivory"
+      ],
+      "availableSizes": [
+        "0-3M",
+        "3-6M",
+        "6-12M"
+      ],
+      "images": [
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+      ],
+      "status": "published",
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNewArrival": false,
+      "isNewbornEssential": true,
+      "genderCollection": "unisex",
+      "stockQuantity": 44,
+      "lowStockThreshold": 8,
+      "supplierStockStatus": "in_stock",
+      "createdAt": "2026-10-15T10:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-2",
+      "name": "Botanical Muslin Swaddle Wrap & Knot Beanie Set",
+      "slug": "botanical-muslin-swaddle-wrap-knot-beanie-set",
+      "shortDescription": "Breathable 4-layer pure organic muslin blanket with matching adjustable top-knot beanie.",
+      "fullDescription": "Generously sized at 120cm x 120cm, our premium double-gauze bamboo-cotton swaddle blanket mimics the comforting snugness of the womb. Breathable weave reduces the risk of overheating while softening with every wash.",
+      "category": "blankets-and-swaddles",
+      "categoryName": "Blankets & Swaddles",
+      "regularPrice": 2200,
+      "salePrice": 1850,
+      "currency": "PKR",
+      "sku": "LN-SWAD-02",
+      "materialDetails": "70% Bamboo Viscose, 30% Long-staple Organic Cotton.",
+      "washingInstructions": "Gentle hand or machine wash cool. Tumble dry low or air dry in shade.",
+      "sizeGuide": "One Size Swaddle (120x120 cm), Beanie fits 0-6 Months.",
+      "availableColors": [
+        "Blush Pink Botanical",
+        "Sage Meadow",
+        "Oat Flora"
+      ],
+      "availableSizes": [
+        "Newborn (0-6M)"
+      ],
+      "images": [
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_swaddle_set_1793176729232.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+      ],
+      "status": "published",
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNewArrival": true,
+      "isNewbornEssential": true,
+      "genderCollection": "baby-girl",
+      "stockQuantity": 38,
+      "lowStockThreshold": 5,
+      "supplierStockStatus": "in_stock",
+      "createdAt": "2026-10-18T12:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-3",
+      "name": "Luxury Newborn Welcome Keepsake Gift Box",
+      "slug": "luxury-newborn-welcome-keepsake-gift-box",
+      "shortDescription": "Complete 5-piece nursery hamper: waffle blanket, star sleepsuit, natural wood rattle, handknit booties, gift box.",
+      "fullDescription": "The ultimate baby shower and hospital homecoming gift. Packaged in a rigid linen-textured presentation box tied with a grosgrain ribbon and wooden 'Welcome Little One' tag. Includes a plush honeycomb waffle throw, modal sleepsuit, artisan wooden rattle, and hand-crocheted bootie socks.",
+      "category": "newborn-gift-sets",
+      "categoryName": "Newborn Gift Sets",
+      "regularPrice": 5950,
+      "salePrice": 5200,
+      "currency": "PKR",
+      "sku": "LN-GIFT-03",
+      "materialDetails": "Pure combed cotton, chemical-free raw beechwood, water-based natural wax polish.",
+      "washingInstructions": "Textiles: 30°C gentle cycle. Wooden rattle: wipe clean with damp cloth, do not submerge.",
+      "sizeGuide": "Perfect for newborns 0-3 Months.",
+      "availableColors": [
+        "Warm Ivory & Oat",
+        "Earthy Sage",
+        "Soft Rose"
+      ],
+      "availableSizes": [
+        "0-3M"
+      ],
+      "images": [
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_gift_bundle_1793176729526.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+      ],
+      "status": "published",
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNewArrival": false,
+      "isNewbornEssential": true,
+      "genderCollection": "unisex",
+      "stockQuantity": 19,
+      "lowStockThreshold": 5,
+      "supplierStockStatus": "in_stock",
+      "createdAt": "2026-10-12T08:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-4",
+      "name": "Cozy Cable-Knit Baby Booties & Bonnet Set",
+      "slug": "cozy-cable-knit-baby-booties-bonnet-set",
+      "shortDescription": "Charming hand-crafted cotton-wool blend knit booties with stay-on ties and matching ear-cover bonnet.",
+      "fullDescription": "Designed specifically to keep tiny extremities warm without irritation. The booties feature gentle ribbon-ties that prevent slipping off restless kicking feet, paired with an adjustable chin-tie pixie bonnet.",
+      "category": "socks-hats-and-mittens",
+      "categoryName": "Socks, Hats & Mittens",
+      "regularPrice": 1750,
+      "salePrice": 1450,
+      "currency": "PKR",
+      "sku": "LN-BOOT-04",
+      "materialDetails": "85% Soft Combed Cotton, 15% Fine Merino Wool (non-itch).",
+      "washingInstructions": "Hand wash with mild baby detergent. Air dry flat.",
+      "sizeGuide": "0-6M (Bootie sole length: 9.5cm).",
+      "availableColors": [
+        "Oatmeal Beige",
+        "Cream White",
+        "Dusty Sage"
+      ],
+      "availableSizes": [
+        "0-6M"
+      ],
+      "images": [
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg"
+      ],
+      "status": "published",
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNewArrival": true,
+      "isNewbornEssential": true,
+      "genderCollection": "unisex",
+      "stockQuantity": 32,
+      "lowStockThreshold": 6,
+      "supplierStockStatus": "in_stock",
+      "createdAt": "2026-10-20T09:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-5",
+      "name": "Cloud-Soft Waffle Knit Sleepsuit with Fold-over Mittens",
+      "slug": "cloud-soft-waffle-knit-sleepsuit",
+      "shortDescription": "Textured honeycomb waffle cotton sleepsuit with built-in scratch mitts and two-way safety zipper.",
+      "fullDescription": "Sleep comfortably without midnight diaper struggle. Features an enclosed two-way protective zipper with top fabric chin guard and fold-over cuff mittens to protect delicate skin from newborn fingernail scratches.",
+      "category": "sleepsuits-and-rompers",
+      "categoryName": "Sleepsuits & Rompers",
+      "regularPrice": 2650,
+      "salePrice": 2250,
+      "currency": "PKR",
+      "sku": "LN-SLP-05",
+      "materialDetails": "100% Breathable Waffle Weave Cotton.",
+      "washingInstructions": "Machine wash cold. Tumble dry delicate or line dry.",
+      "sizeGuide": "0-3M (Up to 60cm), 3-6M (60-68cm), 6-12M (68-76cm)",
+      "availableColors": [
+        "Oat Beige",
+        "Earthy Sage",
+        "Warm Ivory"
+      ],
+      "availableSizes": [
+        "0-3M",
+        "3-6M",
+        "6-12M"
+      ],
+      "images": [
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg"
+      ],
+      "status": "published",
+      "isFeatured": false,
+      "isBestSeller": true,
+      "isNewArrival": true,
+      "isNewbornEssential": true,
+      "genderCollection": "baby-boy",
+      "stockQuantity": 24,
+      "lowStockThreshold": 5,
+      "supplierStockStatus": "in_stock",
+      "createdAt": "2026-10-22T14:30:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    },
+    {
+      "id": "prod-6",
+      "name": "3-Pack Organic Cotton Essential Newborn Bodysuits",
+      "slug": "3-pack-organic-cotton-essential-bodysuits",
+      "shortDescription": "Triple-pack of expandable envelope-neck bodysuits in complementary neutral earthy hues.",
+      "fullDescription": "The daily foundation of every newborn's wardrobe. Envelope shoulders stretch easily downwards over shoulders for mess-free diaper mishaps. Includes 3 coordinating shades: Oat, Warm Ivory, and Soft Sage.",
+      "category": "sleepsuits-and-rompers",
+      "categoryName": "Sleepsuits & Rompers",
+      "regularPrice": 3400,
+      "salePrice": 2950,
+      "currency": "PKR",
+      "sku": "LN-BODY-06",
+      "materialDetails": "100% Ring-Spun Organic Cotton, Nickel-free poppers.",
+      "washingInstructions": "Machine wash warm 40°C. Suitable for tumble drying.",
+      "sizeGuide": "0-3M, 3-6M, 6-12M",
+      "availableColors": [
+        "Earth Tones Trio (Oat/Sage/Ivory)"
+      ],
+      "availableSizes": [
+        "0-3M",
+        "3-6M",
+        "6-12M"
+      ],
+      "images": [
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg",
+        "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg"
+      ],
+      "status": "published",
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNewArrival": false,
+      "isNewbornEssential": true,
+      "genderCollection": "unisex",
+      "stockQuantity": 52,
+      "lowStockThreshold": 10,
+      "supplierStockStatus": "in_stock",
+      "createdAt": "2026-10-10T11:00:00Z",
+      "updatedAt": "2026-10-28T01:00:00Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-1",
+      "name": "Sleepsuits & Rompers",
+      "slug": "sleepsuits-and-rompers",
+      "description": "Buttery soft ribbed and waffle sleepsuits crafted for cozy naps and newborn comfort.",
+      "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_knit_romper_1793176728603.jpg",
+      "productCount": 3
+    },
+    {
+      "id": "cat-2",
+      "name": "Blankets & Swaddles",
+      "slug": "blankets-and-swaddles",
+      "description": "Double-gauze breathable muslin and honeycomb knit blankets for serene snoozing.",
+      "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_swaddle_set_1793176729232.jpg",
+      "productCount": 1
+    },
+    {
+      "id": "cat-3",
+      "name": "Socks, Hats & Mittens",
+      "slug": "socks-hats-and-mittens",
+      "description": "Stay-on bootie socks, knotted beanies, and scratch mittens in soothing natural colors.",
+      "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/hero_newborn_clothing_1793176730078.jpg",
+      "productCount": 1
+    },
+    {
+      "id": "cat-4",
+      "name": "Newborn Gift Sets",
+      "slug": "newborn-gift-sets",
+      "description": "Thoughtfully curated keepsake gift hampers and hospital-bag starter bundles.",
+      "image": "https://raw.githubusercontent.com/kanasim26-droid/Littlenest/main/src/assets/images/product_gift_bundle_1793176729526.jpg",
+      "productCount": 1
+    }
+  ]
+}
