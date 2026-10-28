@@ -36,9 +36,10 @@ function saveDatabase(data: any) {
   }
 }
 
-async function startServer() {
-  const app = express();
-  app.use(express.json());
+export const app = express();
+app.use(express.json());
+
+async function configureApp() {
 
   // Simple token-based admin auth middleware
   function requireAdmin(req: Request, res: Response, next: NextFunction) {
@@ -1001,12 +1002,16 @@ async function startServer() {
     });
   }
 
+}
+
+// Configure routes once when this module is loaded. Vercel imports this
+// Express app as a serverless function; local development uses the same app.
+configureApp().catch(err => {
+  console.error('Failed to configure server:', err);
+});
+
+if (process.env.VERCEL !== '1') {
   app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
   });
 }
-
-startServer().catch(err => {
-  console.error('Failed to start server:', err);
-  process.exit(1);
-});
