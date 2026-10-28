@@ -12,6 +12,30 @@ import {
   EmailTemplate, 
   DashboardMetrics 
 } from '../types';
+import database from '../../data/database.json';
+
+// Static catalog fallback for deployments where the Express API is not hosted.
+const catalog = database as { products: Product[]; categories: Category[] };
+
+const getLocalProducts = (params?: { category?: string; collection?: string; search?: string; sort?: string }): Product[] => {
+  let products = [...(catalog.products || [])].filter((product) => product.status === 'published');
+  if (params?.category) products = products.filter((product) => product.category === params.category);
+  if (params?.collection === 'new-arrivals') products = products.filter((product) => product.isNewArrival);
+  else if (params?.collection === 'best-sellers') products = products.filter((product) => product.isBestSeller);
+  else if (params?.collection === 'essentials') products = products.filter((product) => product.isNewbornEssential);
+  else if (params?.collection === 'baby-girl') products = products.filter((product) => product.genderCollection === 'baby-girl' || product.genderCollection === 'unisex');
+  else if (params?.collection === 'baby-boy') products = products.filter((product) => product.genderCollection === 'baby-boy' || product.genderCollection === 'unisex');
+  else if (params?.collection === 'unisex') products = products.filter((product) => product.genderCollection === 'unisex');
+  else if (params?.collection === 'gift-sets') products = products.filter((product) => product.category === 'newborn-gift-sets');
+  if (params?.search) {
+    const term = params.search.toLowerCase();
+    products = products.filter((product) => product.name.toLowerCase().includes(term) || product.shortDescription.toLowerCase().includes(term) || product.sku.toLowerCase().includes(term));
+  }
+  if (params?.sort === 'price-low') products.sort((a, b) => (a.salePrice || a.regularPrice) - (b.salePrice || b.regularPrice));
+  else if (params?.sort === 'price-high') products.sort((a, b) => (b.salePrice || b.regularPrice) - (a.salePrice || a.regularPrice));
+  else products.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  return products;
+};
 
 const ADMIN_TOKEN_KEY = 'ln_admin_token';
 
@@ -79,9 +103,14 @@ export const api = {
     if (params?.search) query.append('search', params.search);
     if (params?.sort) query.append('sort', params.sort);
 
-    const res = await fetch(`/api/products?${query.toString()}`);
-    if (!res.ok) throw new Error('Failed to load products');
-    return res.json() as Promise<Product[]>;
+    try {
+      const res = await fetch(`/api/products?${query.toString()}`);
+      if (!res.ok) throw new Error('Products API unavailable');
+      return await res.json() as Product[];
+    } catch (error) {
+      console.warn('Products API unavailable; loading the bundled catalog instead.', error);
+      return getLocalProducts(params);
+    }
   },
 
   getAdminProducts: async () => {
@@ -91,9 +120,16 @@ export const api = {
   },
 
   getProduct: async (identifier: string) => {
-    const res = await fetch(`/api/products/${identifier}`);
-    if (!res.ok) throw new Error('Product not found');
-    return res.json() as Promise<Product>;
+    try {
+      const res = await fetch(`/api/products/${encodeURIComponent(identifier)}`);
+      if (!res.ok) throw new Error('Product API unavailable');
+      return await res.json() as Product;
+    } catch (error) {
+      const product = (catalog.products || []).find((item) => item.id === identifier || item.slug === identifier);
+      if (!product) throw new Error('Product not found');
+      console.warn('Product API unavailable; loading the bundled product instead.', error);
+      return product;
+    }
   },
 
   createProduct: async (productData: Partial<Product>) => {
@@ -136,9 +172,14 @@ export const api = {
 
   // Categories
   getCategories: async () => {
-    const res = await fetch('/api/categories');
-    if (!res.ok) throw new Error('Failed to load categories');
-    return res.json() as Promise<Category[]>;
+    try {
+      const res = await fetch('/api/categories');
+      if (!res.ok) throw new Error('Categories API unavailable');
+      return await res.json() as Category[];
+    } catch (error) {
+      console.warn('Categories API unavailable; loading bundled categories instead.', error);
+      return catalog.categories || [];
+    }
   },
 
   createCategory: async (categoryData: Partial<Category>) => {
