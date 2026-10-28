@@ -12,10 +12,10 @@ import {
   EmailTemplate, 
   DashboardMetrics 
 } from '../types';
-import database from '../../data/database.json';
+import publicCatalog from '../data/catalog.json';
 
 // Static catalog fallback for deployments where the Express API is not hosted.
-const catalog = database as { products: Product[]; categories: Category[] };
+const catalog = publicCatalog as unknown as { products: Product[]; categories: Category[] };
 
 const getLocalProducts = (params?: { category?: string; collection?: string; search?: string; sort?: string }): Product[] => {
   let products = [...(catalog.products || [])].filter((product) => product.status === 'published');
