@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { api } from '../../services/api';
-import { Shield, Lock, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
+import { Shield, Lock, AlertCircle } from 'lucide-react';
 
 interface AdminLoginProps {
   onLoginSuccess: () => void;
@@ -20,7 +20,12 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
       await api.loginAdmin(password);
       onLoginSuccess();
     } catch (err: any) {
-      setError(err.message || 'Invalid administrator password.');
+      const message = err?.message || '';
+      setError(
+        message.toLowerCase().includes('invalid admin password')
+          ? 'Password rejected. The live site uses the ADMIN_PASSWORD value configured in Vercel. Check Project Settings → Environment Variables, then redeploy after updating it.'
+          : message || 'Unable to sign in. Please try again.'
+      );
     } finally {
       setLoading(false);
     }
@@ -47,23 +52,19 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
               <label className="block text-xs font-semibold text-[#4A3B32] mb-1">
                 Store Owner Access Password
               </label>
-              <div className="relative">
-                <input
-                  type="password"
-                  required
-                  autoFocus
-                  placeholder="Enter administrator password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-xs bg-[#FFF9F4] border border-[#E8DCCB] rounded-lg focus:outline-none focus:border-[#5A463C] text-[#4A3B32]"
-                />
-              </div>
-              <div className="mt-2 p-2.5 rounded-lg bg-[#FAF3EB] border border-[#E8DCCB] text-[11px] text-[#665449] flex items-center justify-between">
-                <span>Default setup password:</span>
-                <code className="font-mono font-semibold text-[#5A463C] px-1.5 py-0.5 bg-white rounded border border-[#E8DCCB]">
-                  nest2026
-                </code>
-              </div>
+              <input
+                type="password"
+                required
+                autoFocus
+                autoComplete="current-password"
+                placeholder="Enter administrator password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3.5 py-2.5 text-xs bg-[#FFF9F4] border border-[#E8DCCB] rounded-lg focus:outline-none focus:border-[#5A463C] text-[#4A3B32]"
+              />
+              <p className="mt-2 text-[11px] leading-relaxed text-[#8A7569]">
+                Use the admin password configured for this deployment. For security, the password is not displayed here.
+              </p>
             </div>
 
             {error && (
@@ -85,6 +86,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onBackTo
 
           <div className="mt-6 pt-4 border-t border-[#E8DCCB] text-center">
             <button
+              type="button"
               onClick={onBackToStore}
               className="text-xs text-[#8A7569] hover:text-[#4A3B32] transition-colors"
             >
