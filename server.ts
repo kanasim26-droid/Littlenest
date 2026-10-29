@@ -11,29 +11,57 @@ const PORT = process.env.PORT || 3000;
 const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY || 'littlenest_admin_secret_token_2026';
 let ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'nest2026';
 
-// Helper for atomic file reading and writing
-function getDatabase() {
-  try {
-    if (!fs.existsSync(DATA_FILE)) {
-      throw new Error(`Data file not found at ${DATA_FILE}`);
-    }
-    const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch (err) {
-    console.error('Error reading database file:', err);
-    throw err;
+// Persistent database storage via Supabase. The existing admin API uses a
+// JSON-shaped store model, so keep that model in store_settings.settings while
+// the storefront/admin UI is migrated without breaking existing data contracts.
+const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+async function supabaseRequest(pathname: string, init: RequestInit = {}) {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+    throw new Error('Supabase is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel.');
   }
+  const response = await fetch(`${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/${pathname}`, {
+    ...init,
+    headers: {
+      apikey: SUPABASE_SERVICE_KEY,
+      Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+      'Content-Type': 'application/json',
+      ...(init.headers || {})
+    }
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`Supabase request failed (${response.status}): ${detail}`);
+  }
+  return response;
 }
 
-function saveDatabase(data: any) {
-  try {
-    const tempFile = `${DATA_FILE}.tmp`;
-    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), 'utf-8');
-    fs.renameSync(tempFile, DATA_FILE);
-  } catch (err) {
-    console.error('Error saving database file:', err);
-    throw err;
+async function saveDatabase(data: any) {
+  await supabaseRequest('store_settings?on_conflict=id', {
+    method: 'POST',
+    headers: { Prefer: 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify({
+      id: 'current',
+      settings: data,
+      updated_at: new Date().toISOString()
+    })
+  });
+}
+
+async function getDatabase() {
+  const response = await supabaseRequest('store_settings?id=eq.current&select=settings&limit=1');
+  const rows = await response.json() as Array<{ settings: any }>;
+  if (rows.length && rows[0]?.settings) return rows[0].settings;
+
+  // First-run migration: seed the Supabase JSON document from the repository's
+  // current catalogue/settings once, without depending on serverless disk writes.
+  if (!fs.existsSync(DATA_FILE)) {
+    throw new Error('Supabase store_settings has no initial data and data/database.json was not found.');
   }
+  const seed = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+  await saveDatabase(seed);
+  return seed;
 }
 
 export const app = express();
@@ -55,7 +83,7 @@ async function configureApp() {
   }
 
   // --- AUTH ENDPOINTS ---
-  app.post('/api/auth/login', (req: Request, res: Response) => {
+  app.post('/api/auth/login', async (req: Request, res: Response) => {
     const { password } = req.body;
     if (password === ADMIN_PASSWORD) {
       const sessionToken = `admin_session_${Date.now()}_${Math.random().toString(36).substring(2)}`;
@@ -67,7 +95,7 @@ async function configureApp() {
     return res.status(401).json({ error: 'Invalid admin password' });
   });
 
-  app.post('/api/auth/verify', (req: Request, res: Response) => {
+  app.post('/api/auth/verify', async (req: Request, res: Response) => {
     const authHeader = req.headers.authorization;
     if (authHeader && (authHeader.includes('admin_session_') || authHeader.includes(ADMIN_SECRET_KEY))) {
       return res.json({ valid: true, user: { name: 'Store Owner', role: 'administrator' } });
@@ -75,7 +103,7 @@ async function configureApp() {
     return res.status(401).json({ valid: false });
   });
 
-  app.post('/api/auth/change-password', requireAdmin, (req: Request, res: Response) => {
+  app.post('/api/auth/change-password', requireAdmin, async (req: Request, res: Response) => {
     const { newPassword } = req.body;
     if (!newPassword || newPassword.length < 6) {
       return res.status(400).json({ error: 'Password must be at least 6 characters' });
@@ -85,8 +113,8 @@ async function configureApp() {
   });
 
   // --- PRODUCTS ENDPOINTS ---
-  app.get('/api/products', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/products', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     let products = [...(db.products || [])];
     const { category, collection, search, status, sort } = req.query;
 
@@ -131,13 +159,13 @@ async function configureApp() {
     res.json(products);
   });
 
-  app.get('/api/products/admin', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/products/admin', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.products || []);
   });
 
-  app.get('/api/products/:identifier', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/products/:identifier', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { identifier } = req.params;
     const product = db.products.find((p: any) => p.id === identifier || p.slug === identifier);
     if (!product) {
@@ -146,8 +174,8 @@ async function configureApp() {
     res.json(product);
   });
 
-  app.post('/api/products', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/products', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const newProduct = {
       id: `prod-${Date.now()}`,
       slug: req.body.slug || req.body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
@@ -163,12 +191,12 @@ async function configureApp() {
     };
 
     db.products.unshift(newProduct);
-    saveDatabase(db);
+    await saveDatabase(db);
     res.status(201).json(newProduct);
   });
 
-  app.put('/api/products/:id', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.put('/api/products/:id', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const index = db.products.findIndex((p: any) => p.id === id);
     if (index === -1) {
@@ -180,12 +208,12 @@ async function configureApp() {
       ...req.body,
       updatedAt: new Date().toISOString()
     };
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json(db.products[index]);
   });
 
-  app.delete('/api/products/:id', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.delete('/api/products/:id', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const index = db.products.findIndex((p: any) => p.id === id);
     if (index === -1) {
@@ -194,12 +222,12 @@ async function configureApp() {
     // Safe archiving instead of destructive hard delete
     db.products[index].status = 'archived';
     db.products[index].updatedAt = new Date().toISOString();
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json({ message: 'Product archived successfully', product: db.products[index] });
   });
 
-  app.post('/api/products/:id/duplicate', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/products/:id/duplicate', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const product = db.products.find((p: any) => p.id === id);
     if (!product) return res.status(404).json({ error: 'Product not found' });
@@ -215,18 +243,18 @@ async function configureApp() {
       updatedAt: new Date().toISOString()
     };
     db.products.unshift(duplicated);
-    saveDatabase(db);
+    await saveDatabase(db);
     res.status(201).json(duplicated);
   });
 
   // --- CATEGORIES ENDPOINTS ---
-  app.get('/api/categories', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/categories', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.categories || []);
   });
 
-  app.post('/api/categories', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/categories', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const newCategory = {
       id: `cat-${Date.now()}`,
       slug: req.body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
@@ -234,13 +262,13 @@ async function configureApp() {
       ...req.body
     };
     db.categories.push(newCategory);
-    saveDatabase(db);
+    await saveDatabase(db);
     res.status(201).json(newCategory);
   });
 
   // --- INVENTORY ENDPOINTS ---
-  app.get('/api/inventory', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/inventory', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const items = (db.products || []).map((p: any) => ({
       id: p.id,
       name: p.name,
@@ -256,8 +284,8 @@ async function configureApp() {
     res.json(items);
   });
 
-  app.post('/api/inventory/adjust', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/inventory/adjust', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { productId, stockQuantity, lowStockThreshold, supplierStockStatus } = req.body;
     const product = db.products.find((p: any) => p.id === productId);
     if (!product) return res.status(404).json({ error: 'Product not found' });
@@ -267,18 +295,18 @@ async function configureApp() {
     if (supplierStockStatus) product.supplierStockStatus = supplierStockStatus;
     product.updatedAt = new Date().toISOString();
 
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json({ success: true, product });
   });
 
   // --- DISCOUNTS & COUPONS ENDPOINTS ---
-  app.get('/api/discounts', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/discounts', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.coupons || []);
   });
 
-  app.post('/api/discounts', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/discounts', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const newCoupon = {
       id: `coup-${Date.now()}`,
       code: req.body.code.trim().toUpperCase(),
@@ -287,32 +315,32 @@ async function configureApp() {
       ...req.body
     };
     db.coupons.push(newCoupon);
-    saveDatabase(db);
+    await saveDatabase(db);
     res.status(201).json(newCoupon);
   });
 
-  app.put('/api/discounts/:id', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.put('/api/discounts/:id', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const index = db.coupons.findIndex((c: any) => c.id === id);
     if (index === -1) return res.status(404).json({ error: 'Coupon not found' });
 
     db.coupons[index] = { ...db.coupons[index], ...req.body };
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json(db.coupons[index]);
   });
 
-  app.delete('/api/discounts/:id', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.delete('/api/discounts/:id', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     db.coupons = db.coupons.filter((c: any) => c.id !== id);
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json({ success: true });
   });
 
   // Validate coupon on the server
-  app.post('/api/discounts/validate', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/discounts/validate', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { code, cartSubtotal } = req.body;
     if (!code) return res.status(400).json({ valid: false, error: 'Coupon code required' });
 
@@ -355,8 +383,8 @@ async function configureApp() {
   });
 
   // --- ORDERS ENDPOINTS ---
-  app.get('/api/orders', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/orders', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     let orders = [...(db.orders || [])];
     const { status, paymentMethod, paymentStatus, search } = req.query;
 
@@ -377,8 +405,8 @@ async function configureApp() {
     res.json(orders);
   });
 
-  app.get('/api/orders/:orderNumber', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/orders/:orderNumber', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { orderNumber } = req.params;
     const order = db.orders.find((o: any) => o.orderNumber === orderNumber || o.id === orderNumber);
     if (!order) return res.status(404).json({ error: 'Order not found' });
@@ -386,8 +414,8 @@ async function configureApp() {
   });
 
   // Server-side order creation with strict price recalculation & atomic stock deduction
-  app.post('/api/orders', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/orders', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { customerAddress, items, couponCode, paymentMethod, paymentReference } = req.body;
 
     if (!customerAddress || !customerAddress.fullName || !customerAddress.phone || !customerAddress.streetAddress || !customerAddress.city) {
@@ -556,12 +584,12 @@ async function configureApp() {
     db.emailLogs = db.emailLogs || [];
     db.emailLogs.unshift(customerEmailLog, adminEmailLog);
 
-    saveDatabase(db);
+    await saveDatabase(db);
     res.status(201).json(newOrder);
   });
 
-  app.put('/api/orders/:id/status', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.put('/api/orders/:id/status', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const {
       paymentStatus,
@@ -620,13 +648,13 @@ async function configureApp() {
     if (typeof internalNotes === 'string') order.internalNotes = internalNotes;
 
     order.updatedAt = now;
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json(order);
   });
 
   // Export orders to CSV
-  app.get('/api/orders/export/csv', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/orders/export/csv', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const orders = db.orders || [];
 
     const headers = [
@@ -670,8 +698,8 @@ async function configureApp() {
   });
 
   // --- PAYMENT SETTINGS ENDPOINTS ---
-  app.get('/api/payment-settings', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/payment-settings', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     // Return safe public payment settings without secret keys
     const ps = db.paymentSettings || {};
     res.json({
@@ -697,53 +725,53 @@ async function configureApp() {
     });
   });
 
-  app.get('/api/payment-settings/admin', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/payment-settings/admin', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.paymentSettings || {});
   });
 
-  app.put('/api/payment-settings', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.put('/api/payment-settings', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     db.paymentSettings = {
       ...db.paymentSettings,
       ...req.body
     };
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json(db.paymentSettings);
   });
 
   // --- ANNOUNCEMENT BAR ENDPOINTS ---
-  app.get('/api/announcements', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/announcements', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.announcementSettings || { enabled: false, messages: [] });
   });
 
-  app.put('/api/announcements', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.put('/api/announcements', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     db.announcementSettings = {
       ...db.announcementSettings,
       ...req.body
     };
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json(db.announcementSettings);
   });
 
   // --- POPUP CAMPAIGNS ENDPOINTS ---
-  app.get('/api/popups/active', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/popups/active', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const campaigns = db.popupCampaigns || [];
     // Find active published campaign
     const active = campaigns.find((c: any) => c.status === 'published');
     res.json(active || null);
   });
 
-  app.get('/api/popups', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/popups', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.popupCampaigns || []);
   });
 
-  app.post('/api/popups', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/popups', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const newPopup = {
       id: `pop-${Date.now()}`,
       impressions: 0,
@@ -754,12 +782,12 @@ async function configureApp() {
       ...req.body
     };
     db.popupCampaigns.push(newPopup);
-    saveDatabase(db);
+    await saveDatabase(db);
     res.status(201).json(newPopup);
   });
 
-  app.put('/api/popups/:id', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.put('/api/popups/:id', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const index = db.popupCampaigns.findIndex((p: any) => p.id === id);
     if (index === -1) return res.status(404).json({ error: 'Popup not found' });
@@ -769,20 +797,20 @@ async function configureApp() {
       ...req.body,
       updatedAt: new Date().toISOString()
     };
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json(db.popupCampaigns[index]);
   });
 
-  app.delete('/api/popups/:id', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.delete('/api/popups/:id', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     db.popupCampaigns = db.popupCampaigns.filter((p: any) => p.id !== id);
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json({ success: true });
   });
 
-  app.post('/api/popups/:id/event', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/popups/:id/event', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const { eventType } = req.body; // 'impression' | 'click' | 'conversion'
     const popup = db.popupCampaigns.find((p: any) => p.id === id);
@@ -790,47 +818,47 @@ async function configureApp() {
       if (eventType === 'impression') popup.impressions = (popup.impressions || 0) + 1;
       else if (eventType === 'click') popup.clicks = (popup.clicks || 0) + 1;
       else if (eventType === 'conversion') popup.conversions = (popup.conversions || 0) + 1;
-      saveDatabase(db);
+      await saveDatabase(db);
     }
     res.json({ success: true });
   });
 
   // --- STORE SETTINGS ENDPOINTS ---
-  app.get('/api/store-settings', (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/store-settings', async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.storeSettings || {});
   });
 
-  app.put('/api/store-settings', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.put('/api/store-settings', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     db.storeSettings = {
       ...db.storeSettings,
       ...req.body
     };
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json(db.storeSettings);
   });
 
   // --- SUPPLIERS & DROPSHIPPING ENDPOINTS ---
-  app.get('/api/suppliers', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/suppliers', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.suppliers || []);
   });
 
-  app.post('/api/suppliers', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/suppliers', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const newSupplier = {
       id: `sup-${Date.now()}`,
       lastChecked: new Date().toISOString(),
       ...req.body
     };
     db.suppliers.push(newSupplier);
-    saveDatabase(db);
+    await saveDatabase(db);
     res.status(201).json(newSupplier);
   });
 
-  app.put('/api/suppliers/:id', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.put('/api/suppliers/:id', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const index = db.suppliers.findIndex((s: any) => s.id === id);
     if (index === -1) return res.status(404).json({ error: 'Supplier link not found' });
@@ -840,34 +868,34 @@ async function configureApp() {
       ...req.body,
       lastChecked: new Date().toISOString()
     };
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json(db.suppliers[index]);
   });
 
   // --- EMAIL MANAGEMENT ENDPOINTS ---
-  app.get('/api/emails/templates', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/emails/templates', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.emailTemplates || []);
   });
 
-  app.put('/api/emails/templates/:id', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.put('/api/emails/templates/:id', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const index = db.emailTemplates.findIndex((t: any) => t.id === id);
     if (index === -1) return res.status(404).json({ error: 'Template not found' });
 
     db.emailTemplates[index] = { ...db.emailTemplates[index], ...req.body };
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json(db.emailTemplates[index]);
   });
 
-  app.get('/api/emails/logs', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/emails/logs', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     res.json(db.emailLogs || []);
   });
 
-  app.post('/api/emails/retry/:id', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.post('/api/emails/retry/:id', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const { id } = req.params;
     const log = db.emailLogs.find((l: any) => l.id === id);
     if (!log) return res.status(404).json({ error: 'Email log not found' });
@@ -877,13 +905,13 @@ async function configureApp() {
     log.sentAt = new Date().toISOString();
     log.errorMessage = null;
 
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json({ success: true, log });
   });
 
-  app.post('/api/emails/test', requireAdmin, (req: Request, res: Response) => {
+  app.post('/api/emails/test', requireAdmin, async (req: Request, res: Response) => {
     const { recipient, templateId } = req.body;
-    const db = getDatabase();
+    const db = await getDatabase();
     const now = new Date().toISOString();
     const testLog = {
       id: `em-test-${Date.now()}`,
@@ -897,13 +925,13 @@ async function configureApp() {
       createdAt: now
     };
     db.emailLogs.unshift(testLog);
-    saveDatabase(db);
+    await saveDatabase(db);
     res.json({ success: true, message: `Test email sent to ${testLog.recipient}`, log: testLog });
   });
 
   // --- DASHBOARD OVERVIEW METRICS ---
-  app.get('/api/overview', requireAdmin, (req: Request, res: Response) => {
-    const db = getDatabase();
+  app.get('/api/overview', requireAdmin, async (req: Request, res: Response) => {
+    const db = await getDatabase();
     const orders = db.orders || [];
     const products = db.products || [];
 
@@ -977,7 +1005,7 @@ async function configureApp() {
   });
 
   // --- SUPABASE SQL SCHEMA DOWNLOAD ---
-  app.get('/api/database/export-sql', requireAdmin, (req: Request, res: Response) => {
+  app.get('/api/database/export-sql', requireAdmin, async (req: Request, res: Response) => {
     const migrationFile = path.join(__dirname, 'supabase', 'migrations', '20261028_init_ecommerce.sql');
     if (fs.existsSync(migrationFile)) {
       res.setHeader('Content-Type', 'text/plain');
