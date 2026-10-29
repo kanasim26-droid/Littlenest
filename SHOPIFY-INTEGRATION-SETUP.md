@@ -29,4 +29,4 @@ The Storefront public token is intended to be used by a storefront. Do not place
 
 ## Branch
 
-The integration is on `shopify-integration`. It does not change the production `main` branch or publish the Shopify theme.
+The integration has been merged into `main` and deployed to the existing Vercel project. It remains opt-in until both environment variables are configured. It does not publish the separate Shopify theme branch.
