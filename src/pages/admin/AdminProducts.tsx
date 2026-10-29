@@ -394,6 +394,25 @@ export const AdminProducts: React.FC = () => {
                   />
                 </div>
 
+                <div className="sm:col-span-2 rounded-xl border border-[#E8DCCB] bg-[#FFF9F4] p-4">
+                  <label className="block font-semibold text-[#4A3B32] mb-2">Product Image URL</label>
+                  <div className="flex items-start gap-4">
+                    <div className="w-24 h-24 rounded-lg border border-[#E8DCCB] bg-white overflow-hidden shrink-0 flex items-center justify-center">
+                      {editingProduct.images?.[0] ? <img src={editingProduct.images[0]} alt="Product preview" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <span className="text-[11px] text-[#8A7569] text-center px-2">No image</span>}
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <input
+                        type="url"
+                        placeholder="Paste a direct image URL (https://...)"
+                        value={editingProduct.images?.[0] || ''}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, images: e.target.value.trim() ? [e.target.value.trim()] : [] })}
+                        className="w-full px-3 py-2 bg-white border border-[#E8DCCB] rounded-lg font-mono text-[11px]"
+                      />
+                      <p className="text-[11px] text-[#8A7569]">Use a direct JPG, PNG, or WebP image link. The URL is saved with the product and reused in Inventory and the storefront.</p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="sm:col-span-2">
                   <label className="block font-semibold text-[#4A3B32] mb-1">AliExpress Supplier URL</label>
                   <input
