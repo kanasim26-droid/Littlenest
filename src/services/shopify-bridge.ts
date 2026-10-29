@@ -16,7 +16,6 @@ type ShopifyVariant = {
   title: string;
   sku?: string | null;
   availableForSale: boolean;
-  quantityAvailable?: number | null;
   price: ShopifyMoney;
   compareAtPrice?: ShopifyMoney | null;
   selectedOptions: Array<{ name: string; value: string }>;
@@ -61,7 +60,7 @@ const PRODUCT_FIELDS = `
   images(first: 10) { nodes { url altText } }
   variants(first: 100) {
     nodes {
-      id title sku availableForSale quantityAvailable
+      id title sku availableForSale
       price { amount currencyCode }
       compareAtPrice { amount currencyCode }
       selectedOptions { name value }
@@ -106,7 +105,7 @@ function mapProduct(p: ShopifyProduct): Product {
   if (!images.length && p.featuredImage?.url) images.push(p.featuredImage.url);
   const colors = [...new Set(variants.map((v) => optionValue(v, 'color')))];
   const sizes = [...new Set(variants.map((v) => optionValue(v, 'size')))];
-  const stockQuantity = purchasable.reduce((sum, v) => sum + (typeof v.quantityAvailable === 'number' ? v.quantityAvailable : 1), 0);
+  const stockQuantity = purchasable.length;
   const type = (p.productType || p.tags[0] || 'Baby Essentials').toLowerCase();
   const category = type.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'baby-essentials';
   return {
