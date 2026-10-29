@@ -117,7 +117,7 @@ async function getDatabase() {
 }
 
 export const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '6mb' }));
 
 // Express 4 does not automatically forward rejected async route handlers.
 // Wrap route callbacks so database/API errors return JSON immediately instead of
@@ -185,6 +185,70 @@ async function configureApp() {
     return res.json({ success: true, message: 'Admin password updated successfully' });
   });
 
+  // --- PRODUCT IMAGE UPLOAD (Supabase Storage) ---
+  app.post('/api/uploads/product-image', requireAdmin, async (req: Request, res: Response) => {
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
+      return res.status(503).json({ error: 'Image storage is not configured. Add SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to Vercel environment variables.' });
+    }
+    const { dataUrl, contentType, fileName } = req.body || {};
+    if (typeof dataUrl !== 'string' || !dataUrl.startsWith('data:')) {
+      return res.status(400).json({ error: 'Choose an image file to upload.' });
+    }
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(contentType)) {
+      return res.status(400).json({ error: 'Only JPG, PNG, and WebP images are supported.' });
+    }
+    const match = dataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
+    if (!match || match[1] !== contentType) {
+      return res.status(400).json({ error: 'The selected image could not be read. Please try another file.' });
+    }
+    const imageBuffer = Buffer.from(match[2], 'base64');
+    if (imageBuffer.length > 4 * 1024 * 1024) {
+      return res.status(413).json({ error: 'Image is too large after processing. Please choose a smaller image (maximum 4 MB).' });
+    }
+    const bucket = 'littlenest-product-images';
+    const storageHeaders = {
+      apikey: SUPABASE_SERVICE_KEY,
+      Authorization: 'Bearer ' + SUPABASE_SERVICE_KEY,
+      'Content-Type': 'application/json'
+    };
+    const baseUrl = SUPABASE_URL.replace(/\/$/, '');
+    const bucketResponse = await fetch(baseUrl + '/storage/v1/bucket', {
+      method: 'GET', headers: storageHeaders, signal: AbortSignal.timeout(10000)
+    });
+    if (!bucketResponse.ok) {
+      return res.status(502).json({ error: 'Could not check image storage. Verify the Supabase service role key.' });
+    }
+    const buckets = await bucketResponse.json() as Array<{ name: string }>;
+    if (!buckets.some((item) => item.name === bucket)) {
+      const createResponse = await fetch(baseUrl + '/storage/v1/bucket', {
+        method: 'POST', headers: storageHeaders,
+        body: JSON.stringify({ name: bucket, public: true, fileSizeLimit: 4194304, allowedMimeTypes: allowedTypes }),
+        signal: AbortSignal.timeout(10000)
+      });
+      if (!createResponse.ok && createResponse.status !== 409) {
+        const detail = await createResponse.text();
+        console.error('Could not create product image bucket:', detail);
+        return res.status(502).json({ error: 'Could not create image storage in Supabase. Check your Supabase project permissions.' });
+      }
+    }
+    const safeName = (typeof fileName === 'string' ? fileName : 'product-image')
+      .replace(/[^a-zA-Z0-9._-]/g, '-').slice(-80) || 'product-image';
+    const stem = safeName.replace(/\.[^.]+$/, '');
+    const objectPath = Date.now() + '-' + Math.random().toString(36).slice(2, 9) + '-' + stem + '.webp';
+    const uploadResponse = await fetch(baseUrl + '/storage/v1/object/' + bucket + '/' + objectPath, {
+      method: 'POST',
+      headers: { ...storageHeaders, 'Content-Type': contentType, 'x-upsert': 'false' },
+      body: imageBuffer, signal: AbortSignal.timeout(20000)
+    });
+    if (!uploadResponse.ok) {
+      const detail = await uploadResponse.text();
+      console.error('Product image upload failed:', detail);
+      return res.status(502).json({ error: 'Image upload failed. Check that Supabase Storage is enabled and the service role key has permission.' });
+    }
+    const url = baseUrl + '/storage/v1/object/public/' + bucket + '/' + objectPath;
+    return res.status(201).json({ url, path: objectPath });
+  });
   // --- PRODUCTS ENDPOINTS ---
   app.get('/api/products', async (req: Request, res: Response) => {
     const db = await getDatabase();
