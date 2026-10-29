@@ -6,7 +6,7 @@ import type { Product } from '../types';
  * Shopify's Storefront access token is designed for storefront/browser use.
  * Do not put Admin API access tokens or client secrets in VITE_ variables.
  */
-const shopDomain = (import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || '').trim().replace(/^https?:\\/\\//, '').replace(/\\/$/, '');
+const shopDomain = (import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || '').trim().replace(/^https?:\/\//, '').replace(/\/$/, '');
 const storefrontToken = (import.meta.env.VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN || '').trim();
 const enabled = Boolean(shopDomain && storefrontToken);
 
