@@ -19,8 +19,15 @@ import { Pool } from 'pg';
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const POSTGRES_URL = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL;
-const postgresPool = POSTGRES_URL
-  ? new Pool({ connectionString: POSTGRES_URL, ssl: { rejectUnauthorized: false }, max: 2, connectionTimeoutMillis: 8000 })
+// Some managed connection strings include sslmode=require, which pg parses into
+// its own strict certificate-verification config and overrides the explicit
+// ssl.rejectUnauthorized setting. Remove only sslmode so the Pool's SSL config
+// below can handle managed/self-signed certificate chains.
+const POSTGRES_CONNECTION_STRING = POSTGRES_URL
+  ? POSTGRES_URL.replace(/([?&])sslmode=[^&]*/i, '$1').replace(/[?&]$/, '')
+  : undefined;
+const postgresPool = POSTGRES_CONNECTION_STRING
+  ? new Pool({ connectionString: POSTGRES_CONNECTION_STRING, ssl: { rejectUnauthorized: false }, max: 2, connectionTimeoutMillis: 8000 })
   : null;
 let postgresTableReady: Promise<void> | null = null;
 
