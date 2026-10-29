@@ -10,8 +10,9 @@ export const AdminInventory: React.FC = () => {
 
   const loadInventory = async () => {
     try {
-      const data = await api.getInventory();
-      setItems(data);
+      const [data, products] = await Promise.all([api.getInventory(), api.getAdminProducts()]);
+      const imagesById = new Map(products.map((product) => [product.id, product.images || []]));
+      setItems(data.map((item: any) => ({ ...item, images: imagesById.get(item.id) || [] })));
     } catch (err) {
       console.error(err);
     } finally {
