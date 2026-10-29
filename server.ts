@@ -88,14 +88,6 @@ for (const method of ['get', 'post', 'put', 'patch', 'delete'] as const) {
     ));
   };
 }
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  console.error('LittleNest API request failed:', err?.message || err);
-  if (res.headersSent) return;
-  res.status(503).json({
-    error: 'LittleNest data service is temporarily unavailable.',
-    detail: process.env.NODE_ENV === 'production' ? undefined : String(err?.message || err)
-  });
-});
 
 async function configureApp() {
 
@@ -1059,6 +1051,16 @@ async function configureApp() {
       res.sendFile(path.join(__dirname, 'dist', 'index.html'));
     });
   }
+
+  // Keep this after the routes so rejected async handlers reach it.
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    console.error('LittleNest API request failed:', err?.message || err);
+    if (res.headersSent) return;
+    res.status(503).json({
+      error: 'LittleNest data service is temporarily unavailable.',
+      detail: process.env.NODE_ENV === 'production' ? undefined : String(err?.message || err)
+    });
+  });
 
 }
 
