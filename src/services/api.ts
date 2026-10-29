@@ -39,6 +39,10 @@ const getLocalProducts = (params?: { category?: string; collection?: string; sea
 
 const ADMIN_TOKEN_KEY = 'ln_admin_token';
 
+// The production API can be temporarily unavailable while the database is being repaired.
+// Abort product requests quickly so the bundled catalogue appears immediately instead of waiting for Vercel's 30s timeout.
+const PRODUCT_REQUEST_TIMEOUT_MS = 4000;
+
 export const getAdminToken = (): string | null => {
   return localStorage.getItem(ADMIN_TOKEN_KEY);
 };
@@ -104,7 +108,7 @@ export const api = {
     if (params?.sort) query.append('sort', params.sort);
 
     try {
-      const res = await fetch(`/api/products?${query.toString()}`);
+      const res = await fetch(`/api/products?${query.toString()}`, { signal: AbortSignal.timeout(PRODUCT_REQUEST_TIMEOUT_MS) });
       if (!res.ok) throw new Error('Products API unavailable');
       return await res.json() as Product[];
     } catch (error) {
@@ -121,7 +125,7 @@ export const api = {
 
   getProduct: async (identifier: string) => {
     try {
-      const res = await fetch(`/api/products/${encodeURIComponent(identifier)}`);
+      const res = await fetch(`/api/products/${encodeURIComponent(identifier)}`, { signal: AbortSignal.timeout(PRODUCT_REQUEST_TIMEOUT_MS) });
       if (!res.ok) throw new Error('Product API unavailable');
       return await res.json() as Product;
     } catch (error) {
