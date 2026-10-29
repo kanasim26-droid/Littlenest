@@ -3,7 +3,8 @@ import { clearAdminToken } from '../../services/api';
 import { 
   LayoutDashboard, 
   Package, 
-  Boxes, 
+  Boxes,
+  FolderTree, 
   ShoppingBag, 
   Tag, 
   CreditCard, 
@@ -22,6 +23,7 @@ import {
 export type AdminTab = 
   | 'overview'
   | 'products'
+  | 'categories'
   | 'inventory'
   | 'orders'
   | 'discounts'
@@ -52,6 +54,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   const navItems: { id: AdminTab; label: string; icon: React.FC<{ className?: string }> }[] = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
     { id: 'products', label: 'Products', icon: Package },
+    { id: 'categories', label: 'Categories', icon: FolderTree },
     { id: 'inventory', label: 'Inventory', icon: Boxes },
     { id: 'orders', label: 'Orders', icon: ShoppingBag },
     { id: 'discounts', label: 'Discounts & Coupons', icon: Tag },
