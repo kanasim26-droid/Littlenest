@@ -11,11 +11,35 @@ const PORT = process.env.PORT || 3000;
 const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY || 'littlenest_admin_secret_token_2026';
 let ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'nest2026';
 
-// Persistent database storage via Supabase. The existing admin API uses a
-// JSON-shaped store model, so keep that model in store_settings.settings while
-// the storefront/admin UI is migrated without breaking existing data contracts.
+// Persistent JSON store. Prefer the project's direct PostgreSQL connection so
+// the app can create/seed its own store_settings table even when PostgREST's
+// schema cache has not refreshed. Keep Supabase REST as a fallback.
+import { Pool } from 'pg';
+
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const POSTGRES_URL = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL;
+const postgresPool = POSTGRES_URL
+  ? new Pool({ connectionString: POSTGRES_URL, ssl: { rejectUnauthorized: false }, max: 2, connectionTimeoutMillis: 8000 })
+  : null;
+let postgresTableReady: Promise<void> | null = null;
+
+async function ensurePostgresTable() {
+  if (!postgresPool) throw new Error('PostgreSQL connection is not configured.');
+  if (!postgresTableReady) {
+    postgresTableReady = postgresPool.query(`
+      CREATE TABLE IF NOT EXISTS public.store_settings (
+        id VARCHAR(50) PRIMARY KEY DEFAULT 'current',
+        settings JSONB NOT NULL,
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+      )
+    `).then(() => undefined).catch((error) => {
+      postgresTableReady = null;
+      throw error;
+    });
+  }
+  await postgresTableReady;
+}
 
 async function supabaseRequest(pathname: string, init: RequestInit = {}) {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
@@ -39,6 +63,14 @@ async function supabaseRequest(pathname: string, init: RequestInit = {}) {
 }
 
 async function saveDatabase(data: any) {
+  if (postgresPool) {
+    await ensurePostgresTable();
+    await postgresPool.query(
+      'INSERT INTO public.store_settings (id, settings, updated_at) VALUES ($1, $2::jsonb, now()) ON CONFLICT (id) DO UPDATE SET settings = EXCLUDED.settings, updated_at = now()',
+      ['current', JSON.stringify(data)]
+    );
+    return;
+  }
   await supabaseRequest('store_settings?on_conflict=id', {
     method: 'POST',
     headers: { Prefer: 'resolution=merge-duplicates,return=minimal' },
@@ -51,6 +83,18 @@ async function saveDatabase(data: any) {
 }
 
 async function getDatabase() {
+  if (postgresPool) {
+    await ensurePostgresTable();
+    const result = await postgresPool.query('SELECT settings FROM public.store_settings WHERE id = $1 LIMIT 1', ['current']);
+    if (result.rows.length && result.rows[0]?.settings) return result.rows[0].settings;
+    if (!fs.existsSync(DATA_FILE)) {
+      throw new Error('PostgreSQL store_settings has no initial data and data/database.json was not found.');
+    }
+    const seed = JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+    await saveDatabase(seed);
+    return seed;
+  }
+
   const response = await supabaseRequest('store_settings?id=eq.current&select=settings&limit=1');
   const rows = await response.json() as Array<{ settings: any }>;
   if (rows.length && rows[0]?.settings) return rows[0].settings;
