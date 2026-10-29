@@ -221,7 +221,7 @@ if (enabled) {
       if (params?.sort === 'price-high') products.sort((a, b) => (b.salePrice || b.regularPrice) - (a.salePrice || a.regularPrice));
       return products;
     } catch (error) {
-      console.error('Shopify catalog unavailable; using LittleNest's existing catalog.', error);
+      console.error("Shopify catalog unavailable; using LittleNest’s existing catalog.", error);
       return localGetProducts(params);
     }
   };
