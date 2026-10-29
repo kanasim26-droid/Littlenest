@@ -22,7 +22,7 @@ The file `shopify-products-import.csv` is a separate Shopify product import file
 2. In Shopify admin, open **Products → Import**.
 3. Select `shopify-products-import.csv` from this branch. Open the file in GitHub, click **Raw**, then save it as a CSV file if needed.
 4. Review the import preview before confirming.
-5. After import, check each product's variants and images.
+5. After import, check each product's variants and images. Then create automated collections under **Products → Collections** using each matching product tag: `Sleepsuits & Rompers`, `Blankets & Swaddles`, `Socks, Hats & Mittens`, and `Newborn Gift Sets`. In **Online Store → Themes → Customize**, assign those collections to the four homepage category cards and choose the featured collection.
 
 Official guide: https://help.shopify.com/en/manual/products/import-export/import-products
 
