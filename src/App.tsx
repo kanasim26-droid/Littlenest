@@ -21,6 +21,7 @@ import { AdminLayout, AdminTab } from './pages/admin/AdminLayout';
 import { AdminLogin } from './pages/admin/AdminLogin';
 import { AdminOverview } from './pages/admin/AdminOverview';
 import { AdminProducts } from './pages/admin/AdminProducts';
+import { AdminCategories } from './pages/admin/AdminCategories';
 import { AdminInventory } from './pages/admin/AdminInventory';
 import { AdminOrders } from './pages/admin/AdminOrders';
 import { AdminDiscounts } from './pages/admin/AdminDiscounts';
@@ -85,6 +86,7 @@ export default function App() {
         >
           {adminTab === 'overview' && <AdminOverview onNavigateTab={setAdminTab} />}
           {adminTab === 'products' && <AdminProducts />}
+          {adminTab === 'categories' && <AdminCategories />}
           {adminTab === 'inventory' && <AdminInventory />}
           {adminTab === 'orders' && <AdminOrders />}
           {adminTab === 'discounts' && <AdminDiscounts />}
