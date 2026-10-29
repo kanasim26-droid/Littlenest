@@ -15,6 +15,8 @@ export const AdminProducts: React.FC = () => {
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(null);
   const [saving, setSaving] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imageUploadMessage, setImageUploadMessage] = useState<string | null>(null);
 
   const loadData = async () => {
     try {
@@ -97,6 +99,49 @@ export const AdminProducts: React.FC = () => {
     }
   };
 
+  const handleProductImageUpload = async (file?: File) => {
+    if (!file || !editingProduct) return;
+    setImageUploadMessage(null);
+    setModalError(null);
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      setModalError('Please choose a JPG, PNG, or WebP image.');
+      return;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      setModalError('Please choose an image smaller than 8 MB.');
+      return;
+    }
+    setUploadingImage(true);
+    try {
+      const sourceUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => typeof reader.result === 'string' ? resolve(reader.result) : reject(new Error('Could not read image'));
+        reader.onerror = () => reject(new Error('Could not read image file'));
+        reader.readAsDataURL(file);
+      });
+      const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('This image could not be opened'));
+        img.src = sourceUrl;
+      });
+      const scale = Math.min(1, 1400 / Math.max(image.width, image.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(image.width * scale));
+      canvas.height = Math.max(1, Math.round(image.height * scale));
+      const context = canvas.getContext('2d');
+      if (!context) throw new Error('Your browser could not process this image.');
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const compressedDataUrl = canvas.toDataURL('image/webp', 0.82);
+      const uploaded = await api.uploadProductImage(compressedDataUrl, 'image/webp', file.name.replace(/\.[^.]+$/, '') + '.webp');
+      setEditingProduct(current => current ? { ...current, images: [uploaded.url] } : current);
+      setImageUploadMessage('Image uploaded. Save the product to apply it.');
+    } catch (err: any) {
+      setModalError(err.message || 'Could not upload this image. You can still paste an image URL below.');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
   const handleSaveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingProduct?.name || !editingProduct?.regularPrice) {
@@ -395,20 +440,38 @@ export const AdminProducts: React.FC = () => {
                 </div>
 
                 <div className="sm:col-span-2 rounded-xl border border-[#E8DCCB] bg-[#FFF9F4] p-4">
-                  <label className="block font-semibold text-[#4A3B32] mb-2">Product Image URL</label>
+                  <label className="block font-semibold text-[#4A3B32] mb-2">Product Image</label>
                   <div className="flex items-start gap-4">
                     <div className="w-24 h-24 rounded-lg border border-[#E8DCCB] bg-white overflow-hidden shrink-0 flex items-center justify-center">
                       {editingProduct.images?.[0] ? <img src={editingProduct.images[0]} alt="Product preview" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} /> : <span className="text-[11px] text-[#8A7569] text-center px-2">No image</span>}
                     </div>
                     <div className="flex-1 space-y-2">
-                      <input
-                        type="url"
-                        placeholder="Paste a direct image URL (https://...)"
-                        value={editingProduct.images?.[0] || ''}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, images: e.target.value.trim() ? [e.target.value.trim()] : [] })}
-                        className="w-full px-3 py-2 bg-white border border-[#E8DCCB] rounded-lg font-mono text-[11px]"
-                      />
-                      <p className="text-[11px] text-[#8A7569]">Use a direct JPG, PNG, or WebP image link. The URL is saved with the product and reused in Inventory and the storefront.</p>
+                      <label className="inline-flex items-center justify-center gap-2 px-3 py-2 bg-[#5A463C] text-white rounded-lg font-semibold cursor-pointer hover:bg-[#43332B]">
+                        {uploadingImage ? 'Uploading image...' : 'Choose image from computer'}
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          disabled={uploadingImage}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            void handleProductImageUpload(file);
+                            e.currentTarget.value = '';
+                          }}
+                          className="sr-only"
+                        />
+                      </label>
+                      {imageUploadMessage && <p className="text-[11px] text-emerald-700">{imageUploadMessage}</p>}
+                      <p className="text-[11px] text-[#8A7569]">Choose a JPG, PNG, or WebP file (maximum 8 MB). It is resized and uploaded to permanent Supabase Storage. Save the product to show it in the storefront and inventory.</p>
+                      <div className="pt-2 border-t border-[#E8DCCB]">
+                        <label className="block font-semibold text-[#4A3B32] mb-1">Or paste an image URL</label>
+                        <input
+                          type="url"
+                          placeholder="https://..."
+                          value={(editingProduct.images?.[0] || '').startsWith('data:') ? '' : (editingProduct.images?.[0] || '')}
+                          onChange={(e) => { setImageUploadMessage(null); setEditingProduct({ ...editingProduct, images: e.target.value.trim() ? [e.target.value.trim()] : [] }); }}
+                          className="w-full px-3 py-2 bg-white border border-[#E8DCCB] rounded-lg font-mono text-[11px]"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
