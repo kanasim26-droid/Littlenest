@@ -99,6 +99,18 @@ export const api = {
     }
   },
 
+  // Upload a product image to permanent Supabase Storage through the authenticated API.
+  uploadProductImage: async (dataUrl: string, contentType: string, fileName: string) => {
+    const res = await fetch('/api/uploads/product-image', {
+      method: 'POST',
+      headers: getHeaders(true),
+      body: JSON.stringify({ dataUrl, contentType, fileName }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Failed to upload product image');
+    return data as { url: string; path: string };
+  },
+
   // Products
   getProducts: async (params?: { category?: string; collection?: string; search?: string; sort?: string }) => {
     const query = new URLSearchParams();
