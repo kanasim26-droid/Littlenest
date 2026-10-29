@@ -1,1 +1,1 @@
-{"sections":{"hero":{"type":"hero","settings":{}},"featured":{"type":"featured-collection","settings":{}}},"order":["hero","featured"]}
+{"sections":{"hero":{"type":"hero","settings":{}},"trust":{"type":"trust-bar","settings":{}},"categories":{"type":"category-tiles","settings":{}},"featured":{"type":"featured-collection","settings":{}}},"order":["hero","trust","categories","featured"]}
