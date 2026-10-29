@@ -89,8 +89,19 @@ export const AdminInventory: React.FC = () => {
                 return (
                   <tr key={item.id} className="hover:bg-[#FAF3EB]/50 transition-colors">
                     <td className="py-3 px-4">
-                      <span className="font-semibold text-[#4A3B32] block">{item.name}</span>
-                      <span className="text-[#8A7569] text-[11px] font-mono">SKU: {item.sku}</span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded border border-[#E8DCCB] bg-[#FAF3EB] overflow-hidden shrink-0 flex items-center justify-center">
+                          {item.images?.[0] ? (
+                            <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                          ) : (
+                            <Boxes className="w-5 h-5 text-[#B8A394]" />
+                          )}
+                        </div>
+                        <div>
+                          <span className="font-semibold text-[#4A3B32] block">{item.name}</span>
+                          <span className="text-[#8A7569] text-[11px] font-mono">SKU: {item.sku}</span>
+                        </div>
+                      </div>
                     </td>
                     <td className="py-3 px-4">{item.category}</td>
                     <td className="py-3 px-4 font-mono tabular-nums">
