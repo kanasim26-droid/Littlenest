@@ -22,6 +22,7 @@ async function supabaseRequest(pathname: string, init: RequestInit = {}) {
     throw new Error('Supabase is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel.');
   }
   const response = await fetch(`${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/${pathname}`, {
+    signal: AbortSignal.timeout(8000),
     ...init,
     headers: {
       apikey: SUPABASE_SERVICE_KEY,
@@ -66,6 +67,35 @@ async function getDatabase() {
 
 export const app = express();
 app.use(express.json());
+
+// Express 4 does not automatically forward rejected async route handlers.
+// Wrap route callbacks so database/API errors return JSON immediately instead of
+// leaving requests open until Vercel kills them after 30 seconds.
+const wrapAsyncRoute = (handler: any) => {
+  if (typeof handler !== 'function' || handler.length === 4) return handler;
+  return (req: Request, res: Response, next: NextFunction) =>
+    Promise.resolve(handler(req, res, next)).catch(next);
+};
+for (const method of ['get', 'post', 'put', 'patch', 'delete'] as const) {
+  const originalMethod = (app as any)[method].bind(app);
+  (app as any)[method] = (...args: any[]) => {
+    // app.get('setting') is an Express settings getter, not a route.
+    if (method === 'get' && args.length === 1 && typeof args[0] === 'string') {
+      return originalMethod(...args);
+    }
+    return originalMethod(...args.map((arg: any, index: number) =>
+      index > 0 ? wrapAsyncRoute(arg) : arg
+    ));
+  };
+}
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  console.error('LittleNest API request failed:', err?.message || err);
+  if (res.headersSent) return;
+  res.status(503).json({
+    error: 'LittleNest data service is temporarily unavailable.',
+    detail: process.env.NODE_ENV === 'production' ? undefined : String(err?.message || err)
+  });
+});
 
 async function configureApp() {
 
