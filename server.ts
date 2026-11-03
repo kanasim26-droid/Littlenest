@@ -161,7 +161,7 @@ async function sendResendEmail(input: {
   idempotencyKey: string;
 }) {
   if (!RESEND_API_KEY) throw new Error('Resend is not configured. Add RESEND_API_KEY to Vercel environment variables.');
-  if (!input.to || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(input.to)) {
+  if (!input.to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.to)) {
     throw new Error('A valid recipient email address is required.');
   }
   const response = await fetch('https://api.resend.com/emails', {
@@ -210,18 +210,18 @@ function buildOrderEmail(order: any, kind: 'customer' | 'admin') {
     `Subtotal: Rs. ${order.subtotal}`, `Discount: Rs. ${order.discountAmount || 0}`,
     `Shipping: Rs. ${order.shippingFee || 0}`, `Total: Rs. ${order.total}`,
     `Payment: ${order.paymentMethod}`, `Delivery address: ${addressText}`, `Phone: ${order.phone || ''}`
-  ].join('\\n');
+  ].join('\n');
   const html = `<!doctype html><html><body style="margin:0;background:#faf7f5;font-family:Arial,sans-serif;color:#342b2b"><div style="max-width:620px;margin:24px auto;background:#fff;border-radius:16px;overflow:hidden"><div style="padding:28px;background:#f8e9e9;text-align:center"><div style="font-size:25px;font-weight:bold;letter-spacing:1px">LittleNest</div><h1 style="font-size:22px;margin:16px 0 6px">${heading}</h1><p style="margin:0">${intro}</p></div><div style="padding:24px"><p>Order number: <strong>${orderNumber}</strong></p><p>Hello ${name},</p><table style="width:100%;border-collapse:collapse"><thead><tr><th align="left" style="padding:10px;border-bottom:2px solid #ddd">Product</th><th style="padding:10px;border-bottom:2px solid #ddd">Qty</th><th align="right" style="padding:10px;border-bottom:2px solid #ddd">Amount</th></tr></thead><tbody>${rows}</tbody></table><table style="width:100%;margin-top:16px"><tr><td>Subtotal</td><td align="right">Rs. ${(Number(order.subtotal) || 0).toLocaleString('en-PK')}</td></tr><tr><td>Discount</td><td align="right">Rs. ${(Number(order.discountAmount) || 0).toLocaleString('en-PK')}</td></tr><tr><td>Shipping</td><td align="right">Rs. ${(Number(order.shippingFee) || 0).toLocaleString('en-PK')}</td></tr><tr><td style="padding-top:12px;font-weight:bold">Total</td><td align="right" style="padding-top:12px;font-weight:bold">Rs. ${(Number(order.total) || 0).toLocaleString('en-PK')}</td></tr></table><h3>Delivery details</h3><p>${escapeEmailHtml(addressText)}<br>Phone: ${escapeEmailHtml(order.phone)}</p><p>Payment method: ${escapeEmailHtml(order.paymentMethod)}</p><p style="color:#777;font-size:12px;margin-top:28px">Thank you for choosing LittleNest.</p></div></div></body></html>`;
   return { subject, html, text };
 }
 
-async function deliverOrderEmail(order: any, recipient: string, kind: 'customer' | 'admin', log: any) {
+async function deliverOrderEmail(order: any, recipient: string, kind: 'customer' | 'admin', log: any, attempt = 0) {
   try {
     const message = buildOrderEmail(order, kind);
     const result = await sendResendEmail({
       to: recipient,
       ...message,
-      idempotencyKey: `littlenest/${order.id}/${kind}/v1`
+      idempotencyKey: `littlenest/${order.id}/${kind}/v${attempt + 1}`
     });
     log.status = 'sent';
     log.provider = 'resend';
@@ -1141,16 +1141,21 @@ async function configureApp() {
   app.post('/api/emails/retry/:id', requireAdmin, async (req: Request, res: Response) => {
     const db = await getDatabase();
     const { id } = req.params;
-    const log = db.emailLogs.find((l: any) => l.id === id);
+    const log = (db.emailLogs || []).find((l: any) => l.id === id);
     if (!log) return res.status(404).json({ error: 'Email log not found' });
+    if (log.status === 'sent') return res.status(409).json({ error: 'This email is already marked as sent.' });
 
-    log.status = 'sent';
+    const order = (db.orders || []).find((o: any) => o.orderNumber === log.orderNumber);
+    if (!order) return res.status(404).json({ error: 'The order for this email log could not be found.' });
+    const kind = log.templateId === 'new_order_admin' ? 'admin' : 'customer';
     log.retryCount = (log.retryCount || 0) + 1;
-    log.sentAt = new Date().toISOString();
+    log.status = 'queued';
     log.errorMessage = null;
-
     await saveDatabase(db);
-    res.json({ success: true, log });
+
+    await deliverOrderEmail(order, log.recipient, kind, log, log.retryCount);
+    await saveDatabase(db);
+    return res.json({ success: log.status === 'sent', log });
   });
 
   app.post('/api/emails/test', requireAdmin, async (req: Request, res: Response) => {
@@ -1298,23 +1303,3 @@ async function configureApp() {
   // Keep this after the routes so rejected async handlers reach it.
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     console.error('LittleNest API request failed:', err?.message || err);
-    if (res.headersSent) return;
-    res.status(503).json({
-      error: 'LittleNest data service is temporarily unavailable.',
-      detail: process.env.NODE_ENV === 'production' ? undefined : String(err?.message || err)
-    });
-  });
-
-}
-
-// Configure routes once when this module is loaded. Vercel imports this
-// Express app as a serverless function; local development uses the same app.
-configureApp().catch(err => {
-  console.error('Failed to configure server:', err);
-});
-
-if (process.env.VERCEL !== '1') {
-  app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
-  });
-}
