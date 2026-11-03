@@ -1303,3 +1303,24 @@ async function configureApp() {
   // Keep this after the routes so rejected async handlers reach it.
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     console.error('LittleNest API request failed:', err?.message || err);
+    console.error('LittleNest API request failed:', err?.message || err);
+    if (res.headersSent) return;
+    res.status(503).json({
+      error: 'LittleNest data service is temporarily unavailable.',
+      detail: process.env.NODE_ENV === 'production' ? undefined : String(err?.message || err)
+    });
+  });
+
+}
+
+// Configure routes once when this module is loaded. Vercel imports this
+// Express app as a serverless function; local development uses the same app.
+configureApp().catch(err => {
+  console.error('Failed to configure server:', err);
+});
+
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
