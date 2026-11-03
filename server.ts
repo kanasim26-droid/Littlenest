@@ -140,6 +140,103 @@ for (const method of ['get', 'post', 'put', 'patch', 'delete'] as const) {
   };
 }
 
+
+// --- RESEND TRANSACTIONAL EMAILS ---
+// This runs only on the server. Never expose RESEND_API_KEY to browser code.
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'LittleNest <onboarding@resend.dev>';
+const RESEND_REPLY_TO = process.env.RESEND_REPLY_TO;
+
+function escapeEmailHtml(value: unknown): string {
+  return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[char] as string));
+}
+
+async function sendResendEmail(input: {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+  idempotencyKey: string;
+}) {
+  if (!RESEND_API_KEY) throw new Error('Resend is not configured. Add RESEND_API_KEY to Vercel environment variables.');
+  if (!input.to || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(input.to)) {
+    throw new Error('A valid recipient email address is required.');
+  }
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+      'Idempotency-Key': input.idempotencyKey
+    },
+    body: JSON.stringify({
+      from: RESEND_FROM_EMAIL,
+      to: [input.to],
+      subject: input.subject,
+      html: input.html,
+      text: input.text,
+      ...(RESEND_REPLY_TO ? { reply_to: RESEND_REPLY_TO } : {})
+    }),
+    signal: AbortSignal.timeout(15000)
+  });
+  const payload = await response.json().catch(() => ({})) as any;
+  if (!response.ok) {
+    throw new Error(payload?.message || payload?.name || `Resend returned HTTP ${response.status}`);
+  }
+  return payload as { id?: string };
+}
+
+function buildOrderEmail(order: any, kind: 'customer' | 'admin') {
+  const isCustomer = kind === 'customer';
+  const orderNumber = escapeEmailHtml(order.orderNumber);
+  const name = escapeEmailHtml(order.customerName || 'Customer');
+  const rows = (order.items || []).map((item: any) =>
+    `<tr><td style="padding:10px;border-bottom:1px solid #eee">${escapeEmailHtml(item.productName)}<br><small>${escapeEmailHtml(item.variantColor)} / ${escapeEmailHtml(item.variantSize)}</small></td><td style="padding:10px;border-bottom:1px solid #eee;text-align:center">${Number(item.quantity) || 0}</td><td style="padding:10px;border-bottom:1px solid #eee;text-align:right">Rs. ${(Number(item.totalPrice) || 0).toLocaleString('en-PK')}</td></tr>`
+  ).join('');
+  const address = order.deliveryAddress || {};
+  const addressText = [address.streetAddress, address.area, address.city, address.province, address.postalCode].filter(Boolean).join(', ');
+  const subject = isCustomer
+    ? `LittleNest order confirmed — ${order.orderNumber}`
+    : `New LittleNest order — ${order.orderNumber}`;
+  const heading = isCustomer ? 'Thank you for your order!' : 'A new order has been placed';
+  const intro = isCustomer
+    ? 'We have received your order and our team will prepare it for delivery.'
+    : `A new order was placed by ${name}.`;
+  const text = [
+    heading, intro, `Order: ${order.orderNumber}`, `Customer: ${order.customerName}`,
+    `Items: ${(order.items || []).map((item: any) => `${item.productName} x ${item.quantity} — Rs. ${item.totalPrice}`).join('; ')}`,
+    `Subtotal: Rs. ${order.subtotal}`, `Discount: Rs. ${order.discountAmount || 0}`,
+    `Shipping: Rs. ${order.shippingFee || 0}`, `Total: Rs. ${order.total}`,
+    `Payment: ${order.paymentMethod}`, `Delivery address: ${addressText}`, `Phone: ${order.phone || ''}`
+  ].join('\\n');
+  const html = `<!doctype html><html><body style="margin:0;background:#faf7f5;font-family:Arial,sans-serif;color:#342b2b"><div style="max-width:620px;margin:24px auto;background:#fff;border-radius:16px;overflow:hidden"><div style="padding:28px;background:#f8e9e9;text-align:center"><div style="font-size:25px;font-weight:bold;letter-spacing:1px">LittleNest</div><h1 style="font-size:22px;margin:16px 0 6px">${heading}</h1><p style="margin:0">${intro}</p></div><div style="padding:24px"><p>Order number: <strong>${orderNumber}</strong></p><p>Hello ${name},</p><table style="width:100%;border-collapse:collapse"><thead><tr><th align="left" style="padding:10px;border-bottom:2px solid #ddd">Product</th><th style="padding:10px;border-bottom:2px solid #ddd">Qty</th><th align="right" style="padding:10px;border-bottom:2px solid #ddd">Amount</th></tr></thead><tbody>${rows}</tbody></table><table style="width:100%;margin-top:16px"><tr><td>Subtotal</td><td align="right">Rs. ${(Number(order.subtotal) || 0).toLocaleString('en-PK')}</td></tr><tr><td>Discount</td><td align="right">Rs. ${(Number(order.discountAmount) || 0).toLocaleString('en-PK')}</td></tr><tr><td>Shipping</td><td align="right">Rs. ${(Number(order.shippingFee) || 0).toLocaleString('en-PK')}</td></tr><tr><td style="padding-top:12px;font-weight:bold">Total</td><td align="right" style="padding-top:12px;font-weight:bold">Rs. ${(Number(order.total) || 0).toLocaleString('en-PK')}</td></tr></table><h3>Delivery details</h3><p>${escapeEmailHtml(addressText)}<br>Phone: ${escapeEmailHtml(order.phone)}</p><p>Payment method: ${escapeEmailHtml(order.paymentMethod)}</p><p style="color:#777;font-size:12px;margin-top:28px">Thank you for choosing LittleNest.</p></div></div></body></html>`;
+  return { subject, html, text };
+}
+
+async function deliverOrderEmail(order: any, recipient: string, kind: 'customer' | 'admin', log: any) {
+  try {
+    const message = buildOrderEmail(order, kind);
+    const result = await sendResendEmail({
+      to: recipient,
+      ...message,
+      idempotencyKey: `littlenest/${order.id}/${kind}/v1`
+    });
+    log.status = 'sent';
+    log.provider = 'resend';
+    log.providerMessageId = result.id || null;
+    log.sentAt = new Date().toISOString();
+    log.errorMessage = null;
+  } catch (error: any) {
+    log.status = 'failed';
+    log.provider = 'resend';
+    log.errorMessage = String(error?.message || 'Email delivery failed').slice(0, 500);
+    log.failedAt = new Date().toISOString();
+    console.error(`LittleNest ${kind} email failed for ${order.orderNumber}:`, log.errorMessage);
+  }
+}
+
 async function configureApp() {
 
   // Simple token-based admin auth middleware
@@ -693,36 +790,46 @@ async function configureApp() {
 
     db.orders.unshift(newOrder);
 
-    // Queue automatic confirmation emails
+    // Save the order and its queued email records first. Email failures must never
+    // roll back a valid customer order or deduct stock a second time.
+    db.emailLogs = db.emailLogs || [];
     const customerEmailLog = {
-      id: `em-${Date.now()}-1`,
-      recipient: customerAddress.email,
-      subject: `Order Confirmed: ${orderNumber} — Little Nest`,
+      id: `em-${Date.now()}-customer`,
+      recipient: customerAddress.email || '',
+      subject: `Order Confirmed: ${orderNumber} — LittleNest`,
       templateId: 'order_confirmation_customer',
       orderNumber,
-      status: 'sent',
+      status: 'queued',
       retryCount: 0,
-      sentAt: now,
       createdAt: now
     };
-
-    const adminEmailLog = {
-      id: `em-${Date.now()}-2`,
-      recipient: storeSettings.contactEmail || 'care@littlenest.pk',
-      subject: `🎉 New Order Received: ${orderNumber} (Rs. ${grandTotal.toLocaleString()})`,
+    const adminRecipient = process.env.ADMIN_EMAIL || storeSettings.contactEmail || '';
+    const adminEmailLog = adminRecipient ? {
+      id: `em-${Date.now()}-admin`,
+      recipient: adminRecipient,
+      subject: `New LittleNest Order: ${orderNumber} (Rs. ${grandTotal.toLocaleString()})`,
       templateId: 'new_order_admin',
       orderNumber,
-      status: 'sent',
+      status: 'queued',
       retryCount: 0,
-      sentAt: now,
       createdAt: now
-    };
-
-    db.emailLogs = db.emailLogs || [];
-    db.emailLogs.unshift(customerEmailLog, adminEmailLog);
+    } : null;
+    db.emailLogs.unshift(customerEmailLog);
+    if (adminEmailLog) db.emailLogs.unshift(adminEmailLog);
 
     await saveDatabase(db);
-    res.status(201).json(newOrder);
+
+    // Send after persistence. Persist actual provider outcomes in the email log.
+    await deliverOrderEmail(newOrder, customerEmailLog.recipient, 'customer', customerEmailLog);
+    if (!customerEmailLog.recipient) {
+      customerEmailLog.status = 'failed';
+      customerEmailLog.errorMessage = 'Customer email address was not provided at checkout.';
+    }
+    if (adminEmailLog) {
+      await deliverOrderEmail(newOrder, adminEmailLog.recipient, 'admin', adminEmailLog);
+    }
+    await saveDatabase(db);
+    res.status(201).json({ ...newOrder, emailStatus: customerEmailLog.status });
   });
 
   app.put('/api/orders/:id/status', requireAdmin, async (req: Request, res: Response) => {
@@ -1047,23 +1154,44 @@ async function configureApp() {
   });
 
   app.post('/api/emails/test', requireAdmin, async (req: Request, res: Response) => {
-    const { recipient, templateId } = req.body;
     const db = await getDatabase();
+    const recipient = String(req.body?.recipient || process.env.ADMIN_EMAIL || '').trim();
     const now = new Date().toISOString();
-    const testLog = {
+    const testLog: any = {
       id: `em-test-${Date.now()}`,
-      recipient: recipient || 'care@littlenest.pk',
-      subject: `[Test Preview] Sample Notification (${templateId || 'General'})`,
-      templateId: templateId || 'order_confirmation_customer',
-      orderNumber: 'LN-TEST-001',
-      status: 'sent',
+      recipient,
+      subject: '[LittleNest] Resend connection test',
+      templateId: req.body?.templateId || 'resend_test',
+      status: 'queued',
       retryCount: 0,
-      sentAt: now,
       createdAt: now
     };
+    db.emailLogs = db.emailLogs || [];
     db.emailLogs.unshift(testLog);
     await saveDatabase(db);
-    res.json({ success: true, message: `Test email sent to ${testLog.recipient}`, log: testLog });
+    try {
+      const result = await sendResendEmail({
+        to: recipient,
+        subject: testLog.subject,
+        html: '<div style="font-family:Arial,sans-serif"><h2>LittleNest email test</h2><p>Your Resend connection is working.</p></div>',
+        text: 'LittleNest email test. Your Resend connection is working.',
+        idempotencyKey: `littlenest/test/${testLog.id}`
+      });
+      testLog.status = 'sent';
+      testLog.provider = 'resend';
+      testLog.providerMessageId = result.id || null;
+      testLog.sentAt = new Date().toISOString();
+      testLog.errorMessage = null;
+      await saveDatabase(db);
+      return res.json({ success: true, message: `Test email submitted to Resend for ${recipient}`, log: testLog });
+    } catch (error: any) {
+      testLog.status = 'failed';
+      testLog.provider = 'resend';
+      testLog.errorMessage = String(error?.message || 'Email delivery failed').slice(0, 500);
+      testLog.failedAt = new Date().toISOString();
+      await saveDatabase(db);
+      return res.status(502).json({ success: false, message: 'Resend could not send the test email.', error: testLog.errorMessage, log: testLog });
+    }
   });
 
   // --- DASHBOARD OVERVIEW METRICS ---
