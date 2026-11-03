@@ -1303,7 +1303,6 @@ async function configureApp() {
   // Keep this after the routes so rejected async handlers reach it.
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     console.error('LittleNest API request failed:', err?.message || err);
-    console.error('LittleNest API request failed:', err?.message || err);
     if (res.headersSent) return;
     res.status(503).json({
       error: 'LittleNest data service is temporarily unavailable.',
