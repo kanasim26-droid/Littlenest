@@ -18,7 +18,10 @@ import { Pool } from 'pg';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const POSTGRES_URL = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL;
+// Prefer Vercel's pooled URL for serverless functions. The NON_POOLING URL
+// opens a dedicated database session per function instance and can exhaust the
+// provider's small session limit during traffic spikes.
+const POSTGRES_URL = process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL || process.env.POSTGRES_URL_NON_POOLING;
 // Some managed connection strings include sslmode=require, which pg parses into
 // its own strict certificate-verification config and overrides the explicit
 // ssl.rejectUnauthorized setting. Remove only sslmode so the Pool's SSL config
@@ -27,7 +30,15 @@ const POSTGRES_CONNECTION_STRING = POSTGRES_URL
   ? POSTGRES_URL.replace(/([?&])sslmode=[^&]*/i, '$1').replace(/[?&]$/, '')
   : undefined;
 const postgresPool = POSTGRES_CONNECTION_STRING
-  ? new Pool({ connectionString: POSTGRES_CONNECTION_STRING, ssl: { rejectUnauthorized: false }, max: 2, connectionTimeoutMillis: 8000 })
+  ? new Pool({
+      connectionString: POSTGRES_CONNECTION_STRING,
+      ssl: { rejectUnauthorized: false },
+      // Keep per-instance connections low; Vercel may run many instances at once.
+      max: 1,
+      idleTimeoutMillis: 10000,
+      connectionTimeoutMillis: 8000,
+      allowExitOnIdle: true
+    })
   : null;
 let postgresTableReady: Promise<void> | null = null;
 
